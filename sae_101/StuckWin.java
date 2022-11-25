@@ -21,6 +21,7 @@ public class StuckWin {
             {'-', 'B', 'B', 'B', 'B', '.', '-', '-'},
             {'-', 'B', 'B', 'B', 'B', '-', '-', '-'},
     };
+    final String SPACE = "  ";
 
     /**
      * Déplace un pion ou simule son déplacement
@@ -72,6 +73,12 @@ public class StuckWin {
       }
     }
 
+    /**
+     * Parcours la diagonale commençant/passant par l'element [i][j] du tableau 'state' et enregistre les éléments se trouvant sur la diagonale
+     * @param i coordonnée hozirontale
+     * @param j coordonnée verticale
+     * @param row les élements se trouvant sur la diagonale
+     */
     void createRow(int i, int j, String[] row) {
       row[0] += state[i][j];
       
@@ -80,6 +87,12 @@ public class StuckWin {
       }
     }
 
+    /**
+     * Affiche de manière claire, ordonnée et coloriée une ligne du jeu
+     * @param row une ligne du jeu
+     * @param lettre nombre servant à afficher les coordonnées de la case (sa lettre)
+     * @param chiffre nombre servant à afficher les coordonées de la case (son chiffre)
+     */
     void printRow(String row, int lettre, int chiffre) {
       String[] characters = row.split("");
 
@@ -91,13 +104,13 @@ public class StuckWin {
         // on définit la couleur pour chaque case
         switch (characters[i]) {
           case "R":
-            result += ConsoleColors.RED_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + "  ";
+            result += ConsoleColors.RED_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + SPACE;
             break;
           case "B":
-            result += ConsoleColors.BLUE_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + "  ";
+            result += ConsoleColors.BLUE_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + SPACE;
             break;
           case ".":
-            result += ConsoleColors.WHITE_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + "  ";
+            result += ConsoleColors.WHITE_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + SPACE;
             break;
           default:
             result += "";
@@ -105,8 +118,8 @@ public class StuckWin {
         }
       }
 
-      int nbCasesSurLigne = result.split("  ").length;
-      result = " ".repeat(2 * (4-nbCasesSurLigne)) + result;
+      int nbCasesSurLigne = result.split(SPACE).length;
+      result = SPACE.repeat(4 - nbCasesSurLigne) + result;
 
       System.out.println(result);
     }
