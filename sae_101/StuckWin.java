@@ -35,8 +35,6 @@ public class StuckWin {
       throw new java.lang.UnsupportedOperationException("à compléter");
     }
 
-
-
     /**
      * Construit les trois chaînes représentant les positions accessibles
      * à partir de la position de départ [idLettre][idCol].
@@ -55,7 +53,62 @@ public class StuckWin {
      * l'attribut d'état "state"
      */
     void affiche() {
-      // votre code ici
+      for (int k = state[0].length - 1; k >= 0; k--) {
+        // type tableau pour utiliser les passages par référence
+        String[] row = {""};
+
+        createRow(0, k, row);
+
+        printRow(row[0], 0, k);
+      }
+
+      for (int l = 1; l < state.length; l++) {
+        // type tableau pour utiliser les passages par référence
+        String[] row = {""};
+
+        createRow(l, 0, row);
+
+        printRow(row[0], l, 0);
+      }
+    }
+
+    void createRow(int i, int j, String[] row) {
+      row[0] += state[i][j];
+      
+      if (i < state.length - 1 && j < state[i].length - 1) {
+        createRow(i+1, j+1, row);
+      }
+    }
+
+    void printRow(String row, int lettre, int chiffre) {
+      String[] characters = row.split("");
+
+      String result = "";
+
+      for (int i = 0; i < characters.length; i++) {
+        String position = Character.toString((char)(65+lettre+i)) + (chiffre+i);
+
+        // on définit la couleur pour chaque case
+        switch (characters[i]) {
+          case "R":
+            result += ConsoleColors.RED_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + "  ";
+            break;
+          case "B":
+            result += ConsoleColors.BLUE_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + "  ";
+            break;
+          case ".":
+            result += ConsoleColors.WHITE_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + "  ";
+            break;
+          default:
+            result += "";
+            break;
+        }
+      }
+
+      int nbCasesSurLigne = result.split("  ").length;
+      result = " ".repeat(2 * (4-nbCasesSurLigne)) + result;
+
+      System.out.println(result);
     }
 
     /**
