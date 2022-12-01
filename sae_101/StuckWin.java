@@ -49,9 +49,11 @@ public class StuckWin {
 
       String[] destinations = new String[3];
 
-      destinations[0] = validCase(idLettre-1, idCol);
-      destinations[1] = validCase(idLettre-1, idCol+1);
-      destinations[2] = validCase(idLettre, idCol+1);
+      int c = (couleur == joueurs[1]) ? -1 : 1;
+
+      destinations[0] = validCase(idLettre-(1*c), idCol);
+      destinations[1] = validCase(idLettre-(1*c), idCol+(1*c));
+      destinations[2] = validCase(idLettre, idCol+(1*c));
 
       return destinations;
     }
@@ -65,10 +67,7 @@ public class StuckWin {
     String validCase(int row, int col) {
       if (row >= state.length) return "";
       if (col >= state[row].length) return "";
-
-      if (state[row][col] != '.') {
-        return "";
-      }
+      if (state[row][col] != '.') return "";
 
       return Integer.toString((char)(row+65)) + Integer.toString(col);
     }
