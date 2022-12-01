@@ -31,9 +31,49 @@ public class StuckWin {
      * @param mode ModeMVT.REAL/SIMU selon qu'on réalise effectivement le déplacement ou qu'on le simule seulement.
      * @return enum {OK, BAD_COLOR, DEST_NOT_FREE, EMPTY_SRC, TOO_FAR, EXT_BOARD, EXIT} selon le déplacement
      */
-    Result deplace(char couleur, String lcSource, String lcDest,  ModeMvt mode) {
-      // votre code ici. Supprimer la ligne ci-dessous.
-      throw new java.lang.UnsupportedOperationException("à compléter");
+    Result deplace(char couleur, String lcSource, String lcDest, ModeMvt mode) {
+        int rowSrc = idLettreToInt(lcSource.charAt(0));
+        int colSrc = Character.getNumericValue(lcSource.charAt(1));
+
+        String[] possibleDestinations = possibleDests(couleur, rowSrc, colSrc);
+
+        int rowDest = idLettreToInt(lcDest.charAt(0));
+        int colDest = Character.getNumericValue(lcDest.charAt(1));
+
+        if (state[rowSrc][colSrc] != couleur) return Result.BAD_COLOR;
+        if (rowSrc >= state.length || colSrc >= state[rowSrc].length || state[rowSrc][colSrc] == '-') return Result.EMPTY_SRC;
+        if (rowDest >= state.length || colDest >= state[rowDest].length || state[rowDest][colDest] == '-') return Result.EXT_BOARD;
+        if (state[rowDest][colDest] != '.') return Result.DEST_NOT_FREE;
+        boolean isPossibleCase = false;
+        for (int i = 0; i < possibleDestinations.length; i++) {
+            if (possibleDestinations[i] == lcDest) {
+                isPossibleCase = true;
+                break;
+            }
+        }
+        if (!isPossibleCase) return Result.TOO_FAR;
+
+        if (mode == ModeMvt.REAL) {
+            tmp = state[rowSrc][colSrc];
+            state[rowSrc][colSrc] = state[rowDest][colDest];
+            state[rowDest][colDest] = tmp;
+            // on aurait aussi pu faire
+            // state[rowSrc][colSrc] = '.'
+            // state[rowSrc][colSrc] = state[rowDest][colDest]
+
+            return Result.OK;
+        } else {
+            return Result.OK;
+        }
+    }
+
+    /**
+     * Convertit une lettre en son numéro (ex : A => 1, C => 3)
+     * @param idLettre
+     * @return un entier, le numéro de la lettre
+     */
+    int idLettreToInt(char idLettre) {
+        return (int)(idLettre) - 65;
     }
 
     /**
@@ -44,9 +84,7 @@ public class StuckWin {
      * @param idCol id de la colonne du pion à jouer
      * @return tableau des trois positions jouables par le pion (redondance possible sur les bords)
      */
-    String[] possibleDests(char couleur, int idLettre, int idCol){
-      // int idRow = (int)(idLettre) - 65;
-
+    String[] possibleDests(char couleur, int idLettre, int idCol) {
       String[] destinations = new String[3];
 
       int c = (couleur == joueurs[1]) ? -1 : 1;
@@ -65,11 +103,7 @@ public class StuckWin {
     * @return la destination de la case si jouable, sinon une chaine vide
     */
     String validCase(int row, int col) {
-      if (row >= state.length) return "";
-      if (col >= state[row].length) return "";
-      if (state[row][col] != '.') return "";
-
-      return Integer.toString((char)(row+65)) + Integer.toString(col);
+      return Integer.toString((char)(row+65)) + col;
     }
 
     /**
