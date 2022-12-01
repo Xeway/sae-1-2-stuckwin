@@ -45,8 +45,32 @@ public class StuckWin {
      * @return tableau des trois positions jouables par le pion (redondance possible sur les bords)
      */
     String[] possibleDests(char couleur, int idLettre, int idCol){
-      // votre code ici. Supprimer la ligne ci-dessous.
-      throw new java.lang.UnsupportedOperationException("à compléter");
+      // int idRow = (int)(idLettre) - 65;
+
+      String[] destinations = new String[3];
+
+      destinations[0] = validCase(idLettre-1, idCol);
+      destinations[1] = validCase(idLettre-1, idCol+1);
+      destinations[2] = validCase(idLettre, idCol+1);
+
+      return destinations;
+    }
+
+    /**
+    * Vérifie si la case sélectionée (state[row][col]) peut être jouée par le joueur
+    * @param row
+    * @param col
+    * @return la destination de la case si jouable, sinon une chaine vide
+    */
+    String validCase(int row, int col) {
+      if (row >= state.length) return "";
+      if (col >= state[row].length) return "";
+
+      if (state[row][col] != '.') {
+        return "";
+      }
+
+      return Integer.toString((char)(row+65)) + Integer.toString(col);
     }
 
     /**
