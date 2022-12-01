@@ -60,11 +60,9 @@ public class StuckWin {
             // on aurait aussi pu faire
             // state[rowSrc][colSrc] = '.'
             // state[rowSrc][colSrc] = state[rowDest][colDest]
-
-            return Result.OK;
-        } else {
-            return Result.OK;
         }
+
+        return Result.OK;
     }
 
     /**
