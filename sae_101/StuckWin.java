@@ -204,35 +204,23 @@ public class StuckWin {
      * @param couleur
      * @return tableau de deux chaînes {source,destination} du pion à jouer
      */
-    String[] jouer(char couleur){
+    String[] jouer(char couleur) {
         String src = "";
         String dst = "";
         String[] mvtIa;
         switch(couleur) {
             case 'B':
-                System.out.print("[" + couleur + "] Pion à déplacer : ");
-                src = input.next().toUpperCase();
-                while (src.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(src).find()) {
-                    System.out.print("[" + couleur + "] Entrée invalide, réessayez (pion à déplacer) : ");
-                    src = input.next().toUpperCase();
-                }
-
-                System.out.print("[" + couleur + "] vers : ");
-                dst = input.next().toUpperCase();
-                while (dst.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(dst).find()) {
-                    System.out.print("[" + couleur + "] Entrée invalide, réessayez (pion destination) : ");
-                    dst = input.next().toUpperCase();
-                }
-
-                System.out.println("[" + couleur + "] " + src + " -> " + dst);
-
+                System.out.println("Mouvement " + couleur);
+                src = input.next();
+                dst = input.next();
+                System.out.println(src + "->" + dst);
                 break;
             case 'R':
-                System.out.print("[" + couleur + "] Mouvement : ");
+                System.out.println("Mouvement " + couleur);
                 mvtIa = jouerIA(couleur);
                 src = mvtIa[0];
                 dst = mvtIa[1];
-                System.out.println("[" + couleur + "] " + src + "->" + dst);
+                System.out.println(src + "->" + dst);
                 break;
         }
         return new String[]{src, dst};
