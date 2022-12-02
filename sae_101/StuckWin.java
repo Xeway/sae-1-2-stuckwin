@@ -42,8 +42,16 @@ public class StuckWin {
         int colDest = Character.getNumericValue(lcDest.charAt(1));
 
         if (state[rowSrc][colSrc] != couleur) return Result.BAD_COLOR;
-        if (rowSrc >= state.length || colSrc >= state[rowSrc].length || state[rowSrc][colSrc] == '-') return Result.EMPTY_SRC;
-        if (rowDest >= state.length || colDest >= state[rowDest].length || state[rowDest][colDest] == '-') return Result.EXT_BOARD;
+        if (
+                rowSrc >= state.length ||
+                colSrc >= state[rowSrc].length ||
+                state[rowSrc][colSrc] == '-'
+        ) return Result.EMPTY_SRC;
+        if (
+                rowDest >= state.length ||
+                colDest >= state[rowDest].length ||
+                state[rowDest][colDest] == '-'
+        ) return Result.EXT_BOARD;
         if (state[rowDest][colDest] != '.') return Result.DEST_NOT_FREE;
         boolean isPossibleCase = false;
         for (int i = 0; i < possibleDestinations.length; i++) {
@@ -88,9 +96,9 @@ public class StuckWin {
 
       int c = (couleur == joueurs[1]) ? -1 : 1;
 
-      destinations[0] = validCase(idLettre-(1*c), idCol);
-      destinations[1] = validCase(idLettre-(1*c), idCol+(1*c));
-      destinations[2] = validCase(idLettre, idCol+(1*c));
+      destinations[0] = validCase(idLettre-(c), idCol);
+      destinations[1] = validCase(idLettre-(c), idCol+(c));
+      destinations[2] = validCase(idLettre, idCol+(c));
 
       return destinations;
     }
@@ -130,7 +138,8 @@ public class StuckWin {
     }
 
     /**
-     * Parcours la diagonale commençant/passant par l'element [i][j] du tableau 'state' et enregistre les éléments se trouvant sur la diagonale
+     * Parcours la diagonale commençant/passant par l'element [i][j] du tableau 'state'
+     * et enregistre les éléments se trouvant sur la diagonale
      * @param i coordonnée hozirontale
      * @param j coordonnée verticale
      * @param row les élements se trouvant sur la diagonale
