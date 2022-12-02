@@ -104,10 +104,10 @@ public class StuckWin {
     }
 
     /**
-    * Vérifie si la case sélectionée (state[row][col]) peut être jouée par le joueur
+    * Convertit row et col en identifiant d'une case de la forme [A-G][1-7]
     * @param row
     * @param col
-    * @return la destination de la case si jouable, sinon une chaine vide
+    * @return l'identifiant de la case
     */
     String validCase(int row, int col) {
       return Integer.toString((char)(row+65)) + col;
