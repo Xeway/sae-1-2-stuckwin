@@ -33,6 +33,11 @@ public class StuckWin {
      * @return enum {OK, BAD_COLOR, DEST_NOT_FREE, EMPTY_SRC, TOO_FAR, EXT_BOARD, EXIT} selon le déplacement
      */
     Result deplace(char couleur, String lcSource, String lcDest, ModeMvt mode) {
+        lcSource = lcSource.toUpperCase();
+        lcDest = lcDest.toUpperCase();
+        if (lcSource.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(lcSource).find()) return Result.EMPTY_SRC;
+        if (lcDest.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(lcDest).find()) return Result.EXT_BOARD;
+
         int rowSrc = idLettreToInt(lcSource.charAt(0));
         int colSrc = Character.getNumericValue(lcSource.charAt(1));
 
