@@ -96,9 +96,9 @@ public class StuckWin {
 
       int c = (couleur == joueurs[1]) ? -1 : 1;
 
-      destinations[0] = validCase(idLettre-(c), idCol);
-      destinations[1] = validCase(idLettre-(c), idCol+(c));
-      destinations[2] = validCase(idLettre, idCol+(c));
+      destinations[0] = validCase(idLettre-c, idCol);
+      destinations[1] = validCase(idLettre-c, idCol+c);
+      destinations[2] = validCase(idLettre, idCol+c);
 
       return destinations;
     }
