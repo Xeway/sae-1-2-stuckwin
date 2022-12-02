@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class StuckWin {
     static final Scanner input = new Scanner(System.in);
@@ -54,7 +55,7 @@ public class StuckWin {
         if (!isPossibleCase) return Result.TOO_FAR;
 
         if (mode == ModeMvt.REAL) {
-            tmp = state[rowSrc][colSrc];
+            char tmp = state[rowSrc][colSrc];
             state[rowSrc][colSrc] = state[rowDest][colDest];
             state[rowDest][colDest] = tmp;
             // on aurait aussi pu faire
@@ -200,17 +201,29 @@ public class StuckWin {
         String[] mvtIa;
         switch(couleur) {
             case 'B':
-                System.out.println("Mouvement " + couleur);
-                src = input.next();
-                dst = input.next();
-                System.out.println(src + "->" + dst);
+                System.out.print("[" + couleur + "] Pion à déplacer : ");
+                src = input.next().toUpperCase();
+                while (src.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(src).find()) {
+                    System.out.print("[" + couleur + "] Entrée invalide, réessayez (pion à déplacer) : ");
+                    src = input.next().toUpperCase();
+                }
+
+                System.out.print("[" + couleur + "] vers : ");
+                dst = input.next().toUpperCase();
+                while (dst.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(dst).find()) {
+                    System.out.print("[" + couleur + "] Entrée invalide, réessayez (pion destination) : ");
+                    dst = input.next().toUpperCase();
+                }
+
+                System.out.println("[" + couleur + "] " + src + " -> " + dst);
+
                 break;
             case 'R':
-                System.out.println("Mouvement " + couleur);
+                System.out.print("[" + couleur + "] Mouvement : ");
                 mvtIa = jouerIA(couleur);
                 src = mvtIa[0];
                 dst = mvtIa[1];
-                System.out.println(src + "->" + dst);
+                System.out.println("[" + couleur + "] " + src + "->" + dst);
                 break;
         }
         return new String[]{src, dst};
