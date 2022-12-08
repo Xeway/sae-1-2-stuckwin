@@ -249,7 +249,7 @@ public class StuckWin {
                 int row = idLettreToInt(possibleDestsPion[i].charAt(0));
                 int col = Character.getNumericValue(possibleDestsPion[i].charAt(1));
 
-                if (state[row][col] == couleur) {
+                if (state[row][col] == '.') {
                     canPlay = true;
                     break;
                 }
