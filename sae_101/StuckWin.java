@@ -174,10 +174,10 @@ public class StuckWin {
         // on définit la couleur pour chaque case
         switch (characters[i]) {
           case "R":
-            result += ConsoleColors.RED_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + SPACE;
+            result += ConsoleColors.RED_BACKGROUND + position + ConsoleColors.RESET + SPACE;
             break;
           case "B":
-            result += ConsoleColors.BLUE_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + SPACE;
+            result += ConsoleColors.BLUE_BACKGROUND + position + ConsoleColors.RESET + SPACE;
             break;
           case ".":
             result += ConsoleColors.BLACK + ConsoleColors.WHITE_BACKGROUND + position + ConsoleColors.RESET + SPACE;
