@@ -60,7 +60,7 @@ public class StuckWin {
         if (state[rowDest][colDest] != '.') return Result.DEST_NOT_FREE;
         boolean isPossibleCase = false;
         for (int i = 0; i < possibleDestinations.length; i++) {
-            if (possibleDestinations[i] == lcDest) {
+            if (possibleDestinations[i].equals(lcDest)) {
                 isPossibleCase = true;
                 break;
             }
@@ -115,7 +115,7 @@ public class StuckWin {
     * @return l'identifiant de la case
     */
     String validCase(int row, int col) {
-      return Integer.toString((char)(row+65)) + col;
+      return Character.toString((char)(row+65)) + col;
     }
 
     /**
@@ -212,22 +212,12 @@ public class StuckWin {
     String[] jouer(char couleur) {
         String src = "";
         String dst = "";
-        String[] mvtIa;
-        switch(couleur) {
-            case 'B':
-                System.out.println("Mouvement " + couleur);
-                src = input.next();
-                dst = input.next();
-                System.out.println(src + "->" + dst);
-                break;
-            case 'R':
-                System.out.println("Mouvement " + couleur);
-                mvtIa = jouerIA(couleur);
-                src = mvtIa[0];
-                dst = mvtIa[1];
-                System.out.println(src + "->" + dst);
-                break;
-        }
+
+        System.out.println("Mouvement " + couleur);
+        src = input.next();
+        dst = input.next();
+        System.out.println(src + "->" + dst);
+
         return new String[]{src, dst};
     }
 
@@ -236,9 +226,37 @@ public class StuckWin {
      * @param couleur
      * @return
      */
-    char finPartie(char couleur){
-      // votre code ici. Supprimer la ligne ci-dessous.
-      throw new java.lang.UnsupportedOperationException("à compléter");
+    char finPartie(char couleur) {
+        List<int[]> pions = new ArrayList<>();
+
+        int i = 0;
+        while (i < state.length && pions.size() < 13) {
+            int j = 0;
+            while (j < state[i].length && pions.size() < 13) {
+                if (state[i][j] == couleur) {
+                    pions.add(new int[]{i, j});
+                }
+                j++;
+            }
+            i++;
+        }
+
+        boolean canPlay = false;
+
+        for (int[] pion : pions) {
+            String[] possibleDestsPion = possibleDests(couleur, pion[0], pion[1]);
+            for (i = 0; i < possibleDestsPion.length; i++) {
+                int row = idLettreToInt(possibleDestsPion[i].charAt(0));
+                int col = Character.getNumericValue(possibleDestsPion[i].charAt(1));
+
+                if (state[row][col] == couleur) {
+                    canPlay = true;
+                    break;
+                }
+            }
+        }
+
+        return canPlay ? 'N' : couleur;
     }
 
 
