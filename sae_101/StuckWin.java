@@ -180,7 +180,7 @@ public class StuckWin {
             result += ConsoleColors.BLUE_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + SPACE;
             break;
           case ".":
-            result += ConsoleColors.WHITE_BACKGROUND_BRIGHT + position + ConsoleColors.RESET + SPACE;
+            result += ConsoleColors.BLACK + ConsoleColors.WHITE_BACKGROUND + position + ConsoleColors.RESET + SPACE;
             break;
           default:
             result += "";
