@@ -180,7 +180,8 @@ public class StuckWin {
             result += ConsoleColors.BLUE_BACKGROUND + position + ConsoleColors.RESET + SPACE;
             break;
           case ".":
-            result += ConsoleColors.BLACK + ConsoleColors.WHITE_BACKGROUND + position + ConsoleColors.RESET + SPACE;
+            result += ConsoleColors.BLACK + ConsoleColors.WHITE_BACKGROUND
+                        + position + ConsoleColors.RESET + SPACE;
             break;
           default:
             result += "";
@@ -285,13 +286,13 @@ public class StuckWin {
                       return;
                   status = jeu.deplace(curCouleur, src, dest, ModeMvt.REAL);
                   partie = jeu.finPartie(nextCouleur);
-                  System.out.println("status : "+status + " partie : " + partie);
-              } while(status != Result.OK && partie=='N');
+                  System.out.println("status : " + status + " partie : " + partie);
+              } while (status != Result.OK && partie == 'N');
               tmp = curCouleur;
               curCouleur = nextCouleur;
               nextCouleur = tmp;
-              cpt ++;
-        } while(partie =='N'); // TODO affiche vainqueur
+              cpt++;
+        } while (partie == 'N'); // TODO affiche vainqueur
         System.out.printf("Victoire : " + partie + " (" + (cpt/2) + " coups)");
     }
 }
