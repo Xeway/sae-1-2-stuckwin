@@ -301,6 +301,19 @@ public class StuckWin {
         }
     }
 
+    public static void writeWinnerCSV(File f, String winner) {
+        try {
+            PrintWriter csv = new PrintWriter(new FileOutputStream(f, true));
+
+            csv.print(winner);
+
+            csv.close();
+        } catch (IOException e) {
+            System.out.println("Il y a eu une erreur pour l'écriture du CSV.");
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         StuckWin jeu = new StuckWin();
         String src = "";
@@ -335,6 +348,8 @@ public class StuckWin {
               nextCouleur = tmp;
               cpt++;
         } while (partie == 'N'); // TODO affiche vainqueur
-        System.out.printf("Victoire : " + partie + " (" + (cpt/2) + " coups)");
+        String winnerResult = "Victoire : " + partie + " (" + (cpt/2) + " coups)";
+        writeWinnerCSV(csvFile, winnerResult);
+        System.out.printf(winnerResult);
     }
 }
