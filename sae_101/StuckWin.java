@@ -1,7 +1,11 @@
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.IOException;
 
 public class StuckWin {
     static final Scanner input = new Scanner(System.in);
@@ -260,6 +264,42 @@ public class StuckWin {
         return canPlay ? 'N' : couleur;
     }
 
+    public static File createCSV() {
+        int csvId = 0;
+        String fileName;
+        File f;
+        do {
+            csvId++;
+            fileName = "StuckWin_" + ((csvId < 10) ? ("0" + csvId) : (csvId)) + ".csv";
+            f = new File(fileName);
+        } while (f.isFile());
+
+        try {
+            PrintWriter csv = new PrintWriter(f);
+
+            csv.println("Couleur,Mouvement source,Mouvement destination,Status");
+
+            csv.close();
+        } catch (IOException e) {
+            System.out.println("Il y a eu une erreur pour l'écriture du CSV.");
+            e.printStackTrace();
+        }
+
+        return f;
+    }
+
+    public static void writeCSV(File f, char couleur, String src, String dest, Result status) {
+        try {
+            PrintWriter csv = new PrintWriter(new FileOutputStream(f, true));
+
+            csv.printf("%c,%s,%s,%s\n", couleur, src, dest, status.toString());
+
+            csv.close();
+        } catch (IOException e) {
+            System.out.println("Il y a eu une erreur pour l'écriture du CSV.");
+            e.printStackTrace();
+        }
+    }
 
     public static void main(String[] args) {
         StuckWin jeu = new StuckWin();
@@ -272,6 +312,7 @@ public class StuckWin {
         char nextCouleur = jeu.joueurs[1];
         char tmp;
         int cpt = 0;
+        File csvFile = createCSV();
 
         // version console
         do {
@@ -286,6 +327,7 @@ public class StuckWin {
                       return;
                   status = jeu.deplace(curCouleur, src, dest, ModeMvt.REAL);
                   partie = jeu.finPartie(nextCouleur);
+                  writeCSV(csvFile, curCouleur, src, dest, status);
                   System.out.println("status : " + status + " partie : " + partie);
               } while (status != Result.OK && partie == 'N');
               tmp = curCouleur;
