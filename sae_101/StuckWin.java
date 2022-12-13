@@ -202,7 +202,7 @@ public class StuckWin {
     /**
      * Joue un tour
      * @param couleur couleur du pion à jouer
-     * @return tableau contenant la position de départ et la destination du pion à jouer.
+     * @return tableau contenant la position de départ et la destination du pion à jouer
      */
     String[] jouerIA(char couleur) {
       // votre code ici. Supprimer la ligne ci-dessous.
@@ -210,9 +210,9 @@ public class StuckWin {
     }
 
     /**
-     * gère le jeu en fonction du joueur/couleur
-     * @param couleur
-     * @return tableau de deux chaînes {source,destination} du pion à jouer
+     * Gère le jeu en fonction du joueur/couleur
+     * @param couleur couleur du joueur jouant actuellement
+     * @return tableau de deux chaînes {source, destination} des pions à jouer
      */
     String[] jouer(char couleur) {
         String src = "";
@@ -227,9 +227,9 @@ public class StuckWin {
     }
 
     /**
-     * retourne 'R' ou 'B' si vainqueur, 'N' si partie pas finie
-     * @param couleur
-     * @return
+     * Retourne 'R' ou 'B' si vainqueur, 'N' si partie pas finie
+     * @param couleur couleur du prochain pion
+     * @return le résultat ('R', 'B' ou 'N')
      */
     char finPartie(char couleur) {
         List<int[]> pions = new ArrayList<>();
@@ -264,6 +264,10 @@ public class StuckWin {
         return canPlay ? 'N' : couleur;
     }
 
+    /**
+     * Créé un nouveau fichier CSV et initialise dedans le titre de chaque colonne
+     * @return le fichier CSV prêt à être utilisé
+     */
     public static File createCSV() {
         int csvId = 0;
         String fileName;
@@ -288,6 +292,14 @@ public class StuckWin {
         return f;
     }
 
+    /**
+     * Enregistre les données du mouvement en cours mises en paramètre dans le fichier CSV donné
+     * @param f le fichier CSV à écrire dedans
+     * @param couleur couleur ('B' ou 'R') du joueur ayant joué
+     * @param src coordonnée du pion source choisie par le joueur
+     * @param dest coordonnée du pion destination choisie par le joueur
+     * @param status état du mouvement fait
+     */
     public static void writeCSV(File f, char couleur, String src, String dest, Result status) {
         try {
             PrintWriter csv = new PrintWriter(new FileOutputStream(f, true));
@@ -301,6 +313,11 @@ public class StuckWin {
         }
     }
 
+    /**
+     * Ecrit à la fin du fichier CSV donné le gagnant de la partie
+     * @param f le fichier CSV à écrire dedans
+     * @param winner chaîne de caractères disant qui est le gagnant
+     */
     public static void writeWinnerCSV(File f, String winner) {
         try {
             PrintWriter csv = new PrintWriter(new FileOutputStream(f, true));
@@ -336,8 +353,10 @@ public class StuckWin {
                   reponse = jeu.jouer(curCouleur);
                   src = reponse[0];
                   dest = reponse[1];
-                  if("q".equals(src))
+                  if ("q".equals(src)) {
+                      writeWinnerCSV(csvFile, "Partie interrompue");
                       return;
+                  }
                   status = jeu.deplace(curCouleur, src, dest, ModeMvt.REAL);
                   partie = jeu.finPartie(nextCouleur);
                   writeCSV(csvFile, curCouleur, src, dest, status);
