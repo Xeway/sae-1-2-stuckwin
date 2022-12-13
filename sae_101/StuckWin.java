@@ -1,3 +1,18 @@
+/**
+ * StuckWin.java
+ * Jeu créé lors de la SAE 101-102 pendant la S1 de 2022/2023
+ * en BUT Informatique à l'IUT de Nord Franche-Comté.
+ *
+ * Le jeu se joue uniquement à l'aide d'un terminal.
+ * A chaque partie commencée, un fichier CSV est créée et enregistre
+ * l'historique des mouvements faits par les joueurs.
+ *
+ * @author HUMBERT Ewan <ewan.humbert@edu.univ-fcomte.fr>
+ * @author SIOUAN Tom <tom.siouan@edu.univ-fcomte.fr>
+ *
+ * Classe : S1B2
+ */
+
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
