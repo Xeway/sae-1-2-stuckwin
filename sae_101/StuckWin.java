@@ -67,16 +67,16 @@ public class StuckWin {
 
         if (state[rowSrc][colSrc] != couleur) return Result.BAD_COLOR;
         if (
-                rowSrc >= state.length ||
-                colSrc >= state[rowSrc].length ||
+                rowSrc >= BOARD_SIZE ||
+                colSrc >= SIZE ||
                 state[rowSrc][colSrc] == '-'
         ) return Result.EMPTY_SRC;
         if (
-                rowDest >= state.length ||
-                colDest >= state[rowDest].length ||
+                rowDest >= BOARD_SIZE ||
+                colDest >= SIZE ||
                 state[rowDest][colDest] == '-'
         ) return Result.EXT_BOARD;
-        if (state[rowDest][colDest] != '.') return Result.DEST_NOT_FREE;
+        if (state[rowDest][colDest] != VIDE) return Result.DEST_NOT_FREE;
         boolean isPossibleCase = false;
         for (int i = 0; i < possibleDestinations.length; i++) {
             if (possibleDestinations[i].equals(lcDest)) {
@@ -91,7 +91,7 @@ public class StuckWin {
             state[rowSrc][colSrc] = state[rowDest][colDest];
             state[rowDest][colDest] = tmp;
             // on aurait aussi pu faire
-            // state[rowSrc][colSrc] = '.'
+            // state[rowSrc][colSrc] = VIDE
             // state[rowSrc][colSrc] = state[rowDest][colDest]
         }
 
@@ -142,7 +142,7 @@ public class StuckWin {
      * l'attribut d'état "state"
      */
     void affiche() {
-      for (int k = state[0].length - 1; k >= 0; k--) {
+      for (int k = SIZE - 1; k >= 0; k--) {
         // type tableau pour utiliser les passages par référence
         String[] row = {""};
 
@@ -151,7 +151,7 @@ public class StuckWin {
         printRow(row[0], 0, k);
       }
 
-      for (int l = 1; l < state.length; l++) {
+      for (int l = 1; l < BOARD_SIZE; l++) {
         // type tableau pour utiliser les passages par référence
         String[] row = {""};
 
@@ -171,7 +171,7 @@ public class StuckWin {
     void createRow(int i, int j, String[] row) {
       row[0] += state[i][j];
       
-      if (i < state.length - 1 && j < state[i].length - 1) {
+      if (i < BOARD_SIZE - 1 && j < SIZE - 1) {
         createRow(i+1, j+1, row);
       }
     }
@@ -250,9 +250,9 @@ public class StuckWin {
         List<int[]> pions = new ArrayList<>();
 
         int i = 0;
-        while (i < state.length && pions.size() < 13) {
+        while (i < BOARD_SIZE && pions.size() < 13) {
             int j = 0;
-            while (j < state[i].length && pions.size() < 13) {
+            while (j < SIZE && pions.size() < 13) {
                 if (state[i][j] == couleur) {
                     pions.add(new int[]{i, j});
                 }
@@ -269,7 +269,7 @@ public class StuckWin {
                 int row = idLettreToInt(possibleDestsPion[i].charAt(0));
                 int col = Character.getNumericValue(possibleDestsPion[i].charAt(1));
 
-                if (state[row][col] == '.') {
+                if (state[row][col] == VIDE) {
                     canPlay = true;
                     break;
                 }
