@@ -251,6 +251,7 @@ public class StuckWin {
     char finPartie(char couleur) {
         List<int[]> pions = new ArrayList<>();
 
+        // on récupère tous les pions bleu ou bien rouge selon le paramètre 'couleur'
         int i = 0;
         while (i < BOARD_SIZE && pions.size() < 13) {
             int j = 0;
@@ -265,6 +266,9 @@ public class StuckWin {
 
         boolean canPlay = false;
 
+        // avec chaque pion de couleur, on récupère les mouvements qu'il peut effectuer
+        // si un des mouvements de ne serait-ce qu'un seul pion est valide
+        // alors la partie n'est pas finie
         for (int[] pion : pions) {
             String[] possibleDestsPion = possibleDests(couleur, pion[0], pion[1]);
             for (i = 0; i < possibleDestsPion.length; i++) {
