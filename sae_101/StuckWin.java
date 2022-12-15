@@ -211,6 +211,7 @@ public class StuckWin {
         }
       }
 
+      // on ajoute des espaces à gauche pour centrer les pions à l'affichage
       int nbCasesSurLigne = result.split(SPACE).length;
       result = SPACE.repeat(4 - nbCasesSurLigne) + result;
 
