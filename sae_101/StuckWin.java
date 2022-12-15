@@ -104,7 +104,7 @@ public class StuckWin {
      * @param idLettre
      * @return un entier, le numéro de la lettre
      */
-    int idLettreToInt(char idLettre) {
+    public static int idLettreToInt(char idLettre) {
         return (int)(idLettre) - 65;
     }
 
@@ -134,7 +134,7 @@ public class StuckWin {
     * @param col
     * @return l'identifiant de la case
     */
-    String validCase(int row, int col) {
+    public static String validCase(int row, int col) {
       return Character.toString((char)(row+65)) + col;
     }
 
