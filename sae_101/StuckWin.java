@@ -294,6 +294,10 @@ public class StuckWin {
         int csvId = 0;
         String fileName;
         File f;
+
+        // on trouve un numéro pas déjà utilisé pour XX dans StuckWin_XX.csv
+        // afin de ne pas écrire dans un fichier qui existe déjà
+        // et créer un tout nouveau fichier CSV vierge
         do {
             csvId++;
             fileName = "StuckWin_" + ((csvId < 10) ? ("0" + csvId) : (csvId)) + ".csv";
