@@ -109,7 +109,7 @@ public class StuckWin {
     }
 
     /**
-     * Construit les trois chaînes représentant les positions accessibles
+     * Construit les trois chaînes représentant les positions accessibles (mais pas forcément valides)
      * à partir de la position de départ [idLettre][idCol].
      * @param couleur couleur du pion à jouer
      * @param idLettre id de la ligne du pion à jouer
@@ -119,6 +119,8 @@ public class StuckWin {
     String[] possibleDests(char couleur, int idLettre, int idCol) {
       String[] destinations = new String[3];
 
+      // selon la couleur du pion, on va chercher les destinations
+      // "en bas" (si rouge) ou "en haut" (si bleu) du pion
       int c = (couleur == joueurs[1]) ? -1 : 1;
 
       destinations[0] = validCase(idLettre-c, idCol);
