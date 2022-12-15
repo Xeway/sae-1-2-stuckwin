@@ -61,24 +61,23 @@ public class StuckWin {
 
         int rowSrc = idLettreToInt(lcSource.charAt(0));
         int colSrc = Character.getNumericValue(lcSource.charAt(1));
-
-        String[] possibleDestinations = possibleDests(couleur, rowSrc, colSrc);
-
-        int rowDest = idLettreToInt(lcDest.charAt(0));
-        int colDest = Character.getNumericValue(lcDest.charAt(1));
-
         if (state[rowSrc][colSrc] != couleur) return Result.BAD_COLOR;
         if (
                 rowSrc >= BOARD_SIZE ||
                 colSrc >= SIZE ||
                 state[rowSrc][colSrc] == '-'
         ) return Result.EMPTY_SRC;
+
+        int rowDest = idLettreToInt(lcDest.charAt(0));
+        int colDest = Character.getNumericValue(lcDest.charAt(1));
         if (
                 rowDest >= BOARD_SIZE ||
                 colDest >= SIZE ||
                 state[rowDest][colDest] == '-'
         ) return Result.EXT_BOARD;
         if (state[rowDest][colDest] != VIDE) return Result.DEST_NOT_FREE;
+
+        String[] possibleDestinations = possibleDests(couleur, rowSrc, colSrc);
         boolean isPossibleCase = false;
         for (int i = 0; i < possibleDestinations.length; i++) {
             if (possibleDestinations[i].equals(lcDest)) {
