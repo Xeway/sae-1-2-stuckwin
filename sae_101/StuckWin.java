@@ -268,8 +268,9 @@ public class StuckWin {
         // avec chaque pion de couleur, on récupère les mouvements qu'il peut effectuer
         // si un des mouvements de ne serait-ce qu'un seul pion est valide
         // alors la partie n'est pas finie
-        for (int[] pion : pions) {
-            String[] possibleDestsPion = possibleDests(couleur, pion[0], pion[1]);
+        i = 0;
+        while (i < pions.size() && !canPlay) {
+            String[] possibleDestsPion = possibleDests(couleur, pions.get(i)[0], pions.get(i)[1]);
             for (i = 0; i < possibleDestsPion.length; i++) {
                 int row = idLettreToInt(possibleDestsPion[i].charAt(0));
                 int col = Character.getNumericValue(possibleDestsPion[i].charAt(1));
@@ -279,6 +280,7 @@ public class StuckWin {
                     break;
                 }
             }
+            i++;
         }
 
         return canPlay ? 'N' : couleur;
