@@ -4,7 +4,7 @@
  * en BUT Informatique à l'IUT de Nord Franche-Comté.
  *
  * Le jeu se joue uniquement à l'aide d'un terminal.
- * A chaque partie commencée, un fichier CSV est créée et enregistre
+ * A chaque partie commencée, un fichier CSV est créé et enregistre
  * l'historique des mouvements faits par les joueurs.
  *
  * @author HUMBERT Ewan <ewan.humbert@edu.univ-fcomte.fr>
