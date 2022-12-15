@@ -54,8 +54,10 @@ public class StuckWin {
     Result deplace(char couleur, String lcSource, String lcDest, ModeMvt mode) {
         lcSource = lcSource.toUpperCase();
         lcDest = lcDest.toUpperCase();
-        if (lcSource.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(lcSource).find()) return Result.EMPTY_SRC;
-        if (lcDest.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(lcDest).find()) return Result.EXT_BOARD;
+        if (lcSource.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(lcSource).find())
+            return Result.EMPTY_SRC;
+        if (lcDest.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(lcDest).find())
+            return Result.EXT_BOARD;
 
         int rowSrc = idLettreToInt(lcSource.charAt(0));
         int colSrc = Character.getNumericValue(lcSource.charAt(1));
