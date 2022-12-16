@@ -56,30 +56,20 @@ public class StuckWin {
         lcDest = lcDest.toUpperCase();
         if (
             lcSource.length() != 2 ||
-            !Pattern.compile("[A-Z][0-9]").matcher(lcSource).find()
-        ) return Result.EMPTY_SRC;
-        if (
+            !Pattern.compile("[A-Z][0-9]").matcher(lcSource).find() ||
             lcDest.length() != 2 ||
             !Pattern.compile("[A-Z][0-9]").matcher(lcDest).find()
         ) return Result.EXT_BOARD;
 
         int rowSrc = idLettreToInt(lcSource.charAt(0));
         int colSrc = Character.getNumericValue(lcSource.charAt(1));
-        if (state[rowSrc][colSrc] != couleur) return Result.BAD_COLOR;
         if (
             rowSrc >= BOARD_SIZE ||
             colSrc >= SIZE ||
             state[rowSrc][colSrc] == '-'
-        ) return Result.EMPTY_SRC;
-
-        int rowDest = idLettreToInt(lcDest.charAt(0));
-        int colDest = Character.getNumericValue(lcDest.charAt(1));
-        if (
-            rowDest >= BOARD_SIZE ||
-            colDest >= SIZE ||
-            state[rowDest][colDest] == '-'
         ) return Result.EXT_BOARD;
-        if (state[rowDest][colDest] != VIDE) return Result.DEST_NOT_FREE;
+        if (state[rowSrc][colSrc] == VIDE) return Result.EMPTY_SRC;
+        if (state[rowSrc][colSrc] != couleur) return Result.BAD_COLOR;
 
         String[] possibleDestinations = possibleDests(couleur, rowSrc, colSrc);
         boolean isPossibleCase = false;
@@ -90,6 +80,15 @@ public class StuckWin {
             }
         }
         if (!isPossibleCase) return Result.TOO_FAR;
+
+        int rowDest = idLettreToInt(lcDest.charAt(0));
+        int colDest = Character.getNumericValue(lcDest.charAt(1));
+        if (
+            rowDest >= BOARD_SIZE ||
+            colDest >= SIZE ||
+            state[rowDest][colDest] == '-'
+        ) return Result.EXT_BOARD;
+        if (state[rowDest][colDest] != VIDE) return Result.DEST_NOT_FREE;
 
         if (mode == ModeMvt.REAL) {
             char tmp = state[rowSrc][colSrc];
