@@ -56,9 +56,9 @@ public class StuckWin {
         lcDest = lcDest.toUpperCase();
         if (
             lcSource.length() != 2 ||
-            !Pattern.compile("[A-Z][0-9]").matcher(lcSource).find() ||
+            !Pattern.compile("[A-G][1-7]").matcher(lcSource).find() ||
             lcDest.length() != 2 ||
-            !Pattern.compile("[A-Z][0-9]").matcher(lcDest).find()
+            !Pattern.compile("[A-G][1-7]").matcher(lcDest).find()
         ) return Result.EXT_BOARD;
 
         int rowSrc = idLettreToInt(lcSource.charAt(0));
