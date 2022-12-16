@@ -25,7 +25,6 @@ import java.io.IOException;
 public class StuckWin {
     static final Scanner input = new Scanner(System.in);
     private static final double BOARD_SIZE = 7;
-    static final String ERRORCSV = "Il y a eu une erreur pour l'écriture du CSV.";
 
     enum Result {OK, BAD_COLOR, DEST_NOT_FREE, EMPTY_SRC, TOO_FAR, EXT_BOARD, EXIT}
     enum ModeMvt {REAL, SIMU}
@@ -43,6 +42,7 @@ public class StuckWin {
             {'-', 'B', 'B', 'B', 'B', '-', '-', '-'},
     };
     static final String SPACE = "  ";
+    static final String CSV_ERROR = "Il y a eu une erreur pour l'écriture du CSV.";
 
     /**
      * Déplace un pion ou simule son déplacement
@@ -313,7 +313,7 @@ public class StuckWin {
 
             csv.close();
         } catch (IOException e) {
-            System.out.println(ERRORCSV);
+            System.out.println(CSV_ERROR);
         }
 
         return f;
@@ -335,7 +335,7 @@ public class StuckWin {
 
             csv.close();
         } catch (IOException e) {
-            System.out.println(ERRORCSV);
+            System.out.println(CSV_ERROR);
         }
     }
 
@@ -352,7 +352,7 @@ public class StuckWin {
 
             csv.close();
         } catch (IOException e) {
-            System.out.println(ERRORCSV);
+            System.out.println(CSV_ERROR);
         }
     }
 
