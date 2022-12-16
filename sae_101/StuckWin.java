@@ -7,6 +7,14 @@
  * A chaque partie commencee, un fichier CSV est cree et enregistre
  * l'historique des mouvements faits par les joueurs.
  *
+ * NOTE : nous tenions a vous informer d'un bug (plus un probleme de design)
+ * dans le code squelette de StuckWin.java fournit.
+ * En effet, quand l'adversaire est sur le point de gagner,
+ * si l'on fait un mouvement invalide, on ne peut pas recommencer
+ * un nouveau mouvement et le jeu s'arrete en affichant le vainqueur.
+ * Le probleme vient des conditions dans le while de la fonction 'main'
+ * Nous n'avons pas ose le corriger.
+ *
  * @author HUMBERT Ewan <ewan.humbert@edu.univ-fcomte.fr>
  * @author SIOUAN Tom <tom.siouan@edu.univ-fcomte.fr>
  *
