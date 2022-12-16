@@ -309,7 +309,7 @@ public class StuckWin {
                 int row = idLettreToInt(possibleDestsPion[i].charAt(0));
                 int col = Character.getNumericValue(possibleDestsPion[i].charAt(1));
 
-                if (row < state.length && col < state[row].length && state[row][col] == VIDE) {
+                if (row < BOARD_SIZE && col < SIZE && state[row][col] == VIDE) {
                     canPlay = true;
                     break;
                 }
