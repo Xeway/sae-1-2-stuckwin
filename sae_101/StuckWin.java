@@ -109,7 +109,7 @@ public class StuckWin {
     }
 
     /**
-     * Construit les trois chaînes representant les positions accessibles (mais pas forcement valides)
+     * Construit les trois chaines representant les positions accessibles (mais pas forcement valides)
      * a partir de la position de depart [idLettre][idCol].
      * @param couleur couleur du pion a jouer
      * @param idLettre id de la ligne du pion a jouer
@@ -180,7 +180,7 @@ public class StuckWin {
     }
 
     /**
-     * Affiche de manière claire, ordonnee et coloriee une ligne du jeu
+     * Affiche de maniere claire, ordonnee et coloriee une ligne du jeu
      * @param row une ligne du jeu
      * @param lettre nombre servant a afficher les coordonnees de la case (sa lettre)
      * @param chiffre nombre servant a afficher les coordonees de la case (son chiffre)
@@ -229,9 +229,9 @@ public class StuckWin {
     }
 
     /**
-     * Gère le jeu en fonction du joueur/couleur
+     * Gere le jeu en fonction du joueur/couleur
      * @param couleur couleur du joueur jouant actuellement
-     * @return tableau de deux chaînes {source, destination} des pions a jouer
+     * @return tableau de deux chaines {source, destination} des pions a jouer
      */
     String[] jouer(char couleur) {
         String src = "";
@@ -261,8 +261,8 @@ public class StuckWin {
     }
 
     /**
-     * Recupère les coordonnees de tous les pions bleu ou bien rouge selon le paramètre 'couleur'
-     * et les mets dans le tableau 'pions' donne en paramètre
+     * Recupere les coordonnees de tous les pions bleu ou bien rouge selon le parametre 'couleur'
+     * et les mets dans le tableau 'pions' donne en parametre
      * @param pions tableau qui va contenir les coordonnees des pions
      * @param couleur couleur des pions a recuperer
      */
@@ -285,7 +285,7 @@ public class StuckWin {
     }
 
     /**
-     * Parcours chaque pion de couleur et recupère les mouvements possibles
+     * Parcours chaque pion de couleur et recupere les mouvements possibles
      * que celui-ci peut faire
      * Si un des mouvements de ne serait-ce qu'un seul pion est valide
      * alors la partie n'est pas finie donc renvoie true
@@ -316,7 +316,7 @@ public class StuckWin {
 
     /**
      * Cree un nouveau fichier CSV et initialise dedans le titre de chaque colonne
-     * @return le fichier CSV prêt a être utilise
+     * @return le fichier CSV pret a etre utilise
      */
     public static File createCSV() {
         int csvId = 0;
@@ -346,7 +346,7 @@ public class StuckWin {
     }
 
     /**
-     * Enregistre les donnees du mouvement en cours mises en paramètre dans le fichier CSV donne
+     * Enregistre les donnees du mouvement en cours mises en parametre dans le fichier CSV donne
      * @param f le fichier CSV a ecrire dedans
      * @param couleur couleur ('B' ou 'R') du joueur ayant joue
      * @param src coordonnee du pion source choisie par le joueur
@@ -368,7 +368,7 @@ public class StuckWin {
     /**
      * Ecrit a la fin du fichier CSV donne le gagnant de la partie
      * @param f le fichier CSV a ecrire dedans
-     * @param winner chaîne de caractères disant qui est le gagnant
+     * @param winner chaine de caracteres disant qui est le gagnant
      */
     public static void writeWinnerCSV(File f, String winner) {
         try {
