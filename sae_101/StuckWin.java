@@ -54,26 +54,30 @@ public class StuckWin {
     Result deplace(char couleur, String lcSource, String lcDest, ModeMvt mode) {
         lcSource = lcSource.toUpperCase();
         lcDest = lcDest.toUpperCase();
-        if (lcSource.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(lcSource).find())
-            return Result.EMPTY_SRC;
-        if (lcDest.length() != 2 || !Pattern.compile("[A-Z][0-9]").matcher(lcDest).find())
-            return Result.EXT_BOARD;
+        if (
+            lcSource.length() != 2 ||
+            !Pattern.compile("[A-Z][0-9]").matcher(lcSource).find()
+        ) return Result.EMPTY_SRC;
+        if (
+            lcDest.length() != 2 ||
+            !Pattern.compile("[A-Z][0-9]").matcher(lcDest).find()
+        ) return Result.EXT_BOARD;
 
         int rowSrc = idLettreToInt(lcSource.charAt(0));
         int colSrc = Character.getNumericValue(lcSource.charAt(1));
         if (state[rowSrc][colSrc] != couleur) return Result.BAD_COLOR;
         if (
-                rowSrc >= BOARD_SIZE ||
-                colSrc >= SIZE ||
-                state[rowSrc][colSrc] == '-'
+            rowSrc >= BOARD_SIZE ||
+            colSrc >= SIZE ||
+            state[rowSrc][colSrc] == '-'
         ) return Result.EMPTY_SRC;
 
         int rowDest = idLettreToInt(lcDest.charAt(0));
         int colDest = Character.getNumericValue(lcDest.charAt(1));
         if (
-                rowDest >= BOARD_SIZE ||
-                colDest >= SIZE ||
-                state[rowDest][colDest] == '-'
+            rowDest >= BOARD_SIZE ||
+            colDest >= SIZE ||
+            state[rowDest][colDest] == '-'
         ) return Result.EXT_BOARD;
         if (state[rowDest][colDest] != VIDE) return Result.DEST_NOT_FREE;
 
@@ -109,8 +113,8 @@ public class StuckWin {
     }
 
     /**
-     * Construit les trois chaines representant les positions accessibles (mais pas forcement valides)
-     * a partir de la position de depart [idLettre][idCol].
+     * Construit les trois chaines representant les positions accessibles
+     * (mais pas forcement valides) a partir de la position de depart [idLettre][idCol].
      * @param couleur couleur du pion a jouer
      * @param idLettre id de la ligne du pion a jouer
      * @param idCol id de la colonne du pion a jouer
@@ -196,10 +200,12 @@ public class StuckWin {
         // on definit la couleur pour chaque case
         switch (characters[i]) {
           case "R":
-            result = result.append(ConsoleColors.RED_BACKGROUND + position + ConsoleColors.RESET + SPACE);
+            result = result.append(ConsoleColors.RED_BACKGROUND + position
+                                   + ConsoleColors.RESET + SPACE);
             break;
           case "B":
-            result = result.append(ConsoleColors.BLUE_BACKGROUND + position + ConsoleColors.RESET + SPACE);
+            result = result.append(ConsoleColors.BLUE_BACKGROUND + position
+                                   + ConsoleColors.RESET + SPACE);
             break;
           case ".":
             result = result.append(ConsoleColors.BLACK + ConsoleColors.WHITE_BACKGROUND
@@ -261,8 +267,8 @@ public class StuckWin {
     }
 
     /**
-     * Recupere les coordonnees de tous les pions bleu ou bien rouge selon le parametre 'couleur'
-     * et les mets dans le tableau 'pions' donne en parametre
+     * Recupere les coordonnees de tous les pions bleu ou bien rouge selon le
+     * parametre 'couleur' et les mets dans le tableau 'pions' donne en parametre
      * @param pions tableau qui va contenir les coordonnees des pions
      * @param couleur couleur des pions a recuperer
      */
