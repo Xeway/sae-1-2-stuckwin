@@ -266,8 +266,8 @@ public class StuckWin {
      */
     void getPions(int[][] pions, char couleur) {
         int index = 0;
-        int i = 0;
 
+        int i = 0;
         while (i < BOARD_SIZE && index < 13) {
             int j = 0;
             while (j < SIZE && index < 13) {
