@@ -251,29 +251,54 @@ public class StuckWin {
      * @return le résultat ('R', 'B' ou 'N')
      */
     char finPartie(char couleur) {
-        List<int[]> pions = new ArrayList<>();
+        int[][] pions = new int[13][2];
 
-        // on récupère tous les pions bleu ou bien rouge selon le paramètre 'couleur'
+        getPions(pions, couleur);
+
+        boolean canPlay = checkCanPlay(pions, couleur);
+
+        return canPlay ? 'N' : couleur;
+    }
+
+    /**
+     * Récupère les coordonnées de tous les pions bleu ou bien rouge selon le paramètre 'couleur'
+     * et les mets dans le tableau 'pions' donné en paramètre
+     * @param pions tableau qui va contenir les coordonnées des pions
+     * @param couleur couleur des pions à récupérer
+     */
+    void getPions(int[][] pions, char couleur) {
+        int index = 0;
         int i = 0;
-        while (i < BOARD_SIZE && pions.size() < 13) {
+
+        while (i < BOARD_SIZE && index < 13) {
             int j = 0;
-            while (j < SIZE && pions.size() < 13) {
+            while (j < SIZE && index < 13) {
                 if (state[i][j] == couleur) {
-                    pions.add(new int[]{i, j});
+                    pions[index][0] = i;
+                    pions[index][1] = j;
+                    index++;
                 }
                 j++;
             }
             i++;
         }
+    }
 
+    /**
+     * Parcours chaque pion de couleur et récupère les mouvements possibles
+     * que celui-ci peut faire
+     * Si un des mouvements de ne serait-ce qu'un seul pion est valide
+     * alors la partie n'est pas finie donc renvoie true
+     * @param pions tableau contenant les coordonnées des pions de couleur
+     * @param couleur couleur des pions
+     * @return vrai si un des pions de couleur peut encore jouer/bouger, faux sinon
+     */
+    boolean checkCanPlay(int[][] pions, char couleur) {
         boolean canPlay = false;
 
-        // avec chaque pion de couleur, on récupère les mouvements qu'il peut effectuer
-        // si un des mouvements de ne serait-ce qu'un seul pion est valide
-        // alors la partie n'est pas finie
-        i = 0;
-        while (i < pions.size() && !canPlay) {
-            String[] possibleDestsPion = possibleDests(couleur, pions.get(i)[0], pions.get(i)[1]);
+        int i = 0;
+        while (i < pions.length && !canPlay) {
+            String[] possibleDestsPion = possibleDests(couleur, pions[i][0], pions[i][1]);
             for (i = 0; i < possibleDestsPion.length; i++) {
                 int row = idLettreToInt(possibleDestsPion[i].charAt(0));
                 int col = Character.getNumericValue(possibleDestsPion[i].charAt(1));
@@ -286,7 +311,7 @@ public class StuckWin {
             i++;
         }
 
-        return canPlay ? 'N' : couleur;
+        return canPlay;
     }
 
     /**
