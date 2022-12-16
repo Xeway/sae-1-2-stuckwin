@@ -14,6 +14,7 @@
  */
 
 import java.io.FileOutputStream;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.io.File;
@@ -213,7 +214,7 @@ public class StuckWin {
       // on ajoute des espaces à gauche pour centrer les pions à l'affichage
       int nbCasesSurLigne = result.toString().split(SPACE).length;
 
-      System.out.println(SPACE.repeat(4 - nbCasesSurLigne) + result.toString());
+      System.out.println(String.join("", Collections.nCopies(4 - nbCasesSurLigne, SPACE)) + result.toString());
     }
 
     /**
