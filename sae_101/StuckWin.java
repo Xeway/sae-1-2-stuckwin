@@ -120,7 +120,7 @@ public class StuckWin {
     String[] possibleDests(char couleur, int idLettre, int idCol) {
       String[] destinations = new String[3];
 
-      // selon la couleur du pion, on va chercher les destinations
+      // selon la couleur du pion, on va chercher les mouvements possibles
       // "en bas" (si rouge) ou "en haut" (si bleu) du pion
       int c = (couleur == joueurs[1]) ? -1 : 1;
 
