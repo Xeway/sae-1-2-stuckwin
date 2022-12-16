@@ -268,9 +268,9 @@ public class StuckWin {
         int index = 0;
 
         int i = 0;
-        while (i < BOARD_SIZE && index < 13) {
+        while (i < BOARD_SIZE && index < pions.length) {
             int j = 0;
-            while (j < SIZE && index < 13) {
+            while (j < SIZE && index < pions.length) {
                 if (state[i][j] == couleur) {
                     pions[index][0] = i;
                     pions[index][1] = j;
