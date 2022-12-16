@@ -71,6 +71,8 @@ public class StuckWin {
         if (state[rowSrc][colSrc] == VIDE) return Result.EMPTY_SRC;
         if (state[rowSrc][colSrc] != couleur) return Result.BAD_COLOR;
 
+        if (lcSource.equals(lcDest)) return Result.DEST_NOT_FREE;
+
         String[] possibleDestinations = possibleDests(couleur, rowSrc, colSrc);
         boolean isPossibleCase = false;
         for (int i = 0; i < possibleDestinations.length; i++) {
