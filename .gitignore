@@ -1,2 +1,7 @@
 # For mac
 .DS_Store
+
+.idea
+*.iml
+*.csv
+*.class
