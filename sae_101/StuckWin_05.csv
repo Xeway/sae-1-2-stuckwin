@@ -22,5 +22,5 @@ B,E3,D4,OK
 R,B5,C4,OK
 B,G1,F2,OK
 R,A6,B5,OK
-B,*G4,F4,EXT_BOARD
+B,G4,F4,OK
 Victoire : R (11 coups)
