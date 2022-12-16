@@ -25,12 +25,13 @@ import java.io.IOException;
 public class StuckWin {
     static final Scanner input = new Scanner(System.in);
     private static final double BOARD_SIZE = 7;
+    static final String ERRORCSV = "Il y a eu une erreur pour l'écriture du CSV.";
 
     enum Result {OK, BAD_COLOR, DEST_NOT_FREE, EMPTY_SRC, TOO_FAR, EXT_BOARD, EXIT}
     enum ModeMvt {REAL, SIMU}
     final char[] joueurs = {'B', 'R'};
-    final int SIZE = 8;
-    final char VIDE = '.';
+    static final int SIZE = 8;
+    static final char VIDE = '.';
     // 'B'=bleu 'R'=rouge '.'=vide '-'=n'existe pas
     char[][] state = {
             {'-', '-', '-', '-', 'R', 'R', 'R', 'R'},
@@ -41,7 +42,7 @@ public class StuckWin {
             {'-', 'B', 'B', 'B', 'B', '.', '-', '-'},
             {'-', 'B', 'B', 'B', 'B', '-', '-', '-'},
     };
-    final String SPACE = "  ";
+    static final String SPACE = "  ";
 
     /**
      * Déplace un pion ou simule son déplacement
@@ -105,7 +106,7 @@ public class StuckWin {
      * @return un entier, le numéro de la lettre
      */
     public static int idLettreToInt(char idLettre) {
-        return (int)(idLettre) - 65;
+        return idLettre - 65;
     }
 
     /**
@@ -188,7 +189,7 @@ public class StuckWin {
     void printRow(String row, int lettre, int chiffre) {
       String[] characters = row.split("");
 
-      String result = "";
+      StringBuilder result = new StringBuilder("");
 
       for (int i = 0; i < characters.length; i++) {
         String position = Character.toString((char)(65+lettre+i)) + (chiffre+i);
@@ -196,26 +197,24 @@ public class StuckWin {
         // on définit la couleur pour chaque case
         switch (characters[i]) {
           case "R":
-            result += ConsoleColors.RED_BACKGROUND + position + ConsoleColors.RESET + SPACE;
+            result = result.append(ConsoleColors.RED_BACKGROUND + position + ConsoleColors.RESET + SPACE);
             break;
           case "B":
-            result += ConsoleColors.BLUE_BACKGROUND + position + ConsoleColors.RESET + SPACE;
+            result = result.append(ConsoleColors.BLUE_BACKGROUND + position + ConsoleColors.RESET + SPACE);
             break;
           case ".":
-            result += ConsoleColors.BLACK + ConsoleColors.WHITE_BACKGROUND
-                        + position + ConsoleColors.RESET + SPACE;
+            result = result.append(ConsoleColors.BLACK + ConsoleColors.WHITE_BACKGROUND + position + ConsoleColors.RESET + SPACE);
             break;
           default:
-            result += "";
+            result = result.append("");
             break;
         }
       }
 
       // on ajoute des espaces à gauche pour centrer les pions à l'affichage
-      int nbCasesSurLigne = result.split(SPACE).length;
-      result = SPACE.repeat(4 - nbCasesSurLigne) + result;
+      int nbCasesSurLigne = result.toString().split(SPACE).length;
 
-      System.out.println(result);
+      System.out.println(SPACE.repeat(4 - nbCasesSurLigne) + result.toString());
     }
 
     /**
@@ -314,8 +313,7 @@ public class StuckWin {
 
             csv.close();
         } catch (IOException e) {
-            System.out.println("Il y a eu une erreur pour l'écriture du CSV.");
-            e.printStackTrace();
+            System.out.println(ERRORCSV);
         }
 
         return f;
@@ -333,12 +331,11 @@ public class StuckWin {
         try {
             PrintWriter csv = new PrintWriter(new FileOutputStream(f, true));
 
-            csv.printf("%c,%s,%s,%s\n", couleur, src, dest, status.toString());
+            csv.printf("%c,%s,%s,%s%n", couleur, src, dest, status.toString());
 
             csv.close();
         } catch (IOException e) {
-            System.out.println("Il y a eu une erreur pour l'écriture du CSV.");
-            e.printStackTrace();
+            System.out.println(ERRORCSV);
         }
     }
 
@@ -355,8 +352,7 @@ public class StuckWin {
 
             csv.close();
         } catch (IOException e) {
-            System.out.println("Il y a eu une erreur pour l'écriture du CSV.");
-            e.printStackTrace();
+            System.out.println(ERRORCSV);
         }
     }
 
@@ -366,7 +362,7 @@ public class StuckWin {
         String dest;
         String[] reponse;
         Result status;
-        char partie = 'N';
+        char partie;
         char curCouleur = jeu.joueurs[0];
         char nextCouleur = jeu.joueurs[1];
         char tmp;
@@ -378,7 +374,6 @@ public class StuckWin {
               // séquence pour Bleu ou rouge
               jeu.affiche();
               do {
-                  status = Result.EXIT;
                   reponse = jeu.jouer(curCouleur);
                   src = reponse[0];
                   dest = reponse[1];
@@ -395,7 +390,7 @@ public class StuckWin {
               curCouleur = nextCouleur;
               nextCouleur = tmp;
               cpt++;
-        } while (partie == 'N'); // TODO affiche vainqueur
+        } while (partie == 'N');
         String winnerResult = "Victoire : " + partie + " (" + (cpt/2) + " coups)";
         writeWinnerCSV(csvFile, winnerResult);
         System.out.printf(winnerResult);
