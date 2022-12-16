@@ -304,9 +304,9 @@ public class StuckWin {
         int i = 0;
         while (i < pions.length && !canPlay) {
             String[] possibleDestsPion = possibleDests(couleur, pions[i][0], pions[i][1]);
-            for (i = 0; i < possibleDestsPion.length; i++) {
-                int row = idLettreToInt(possibleDestsPion[i].charAt(0));
-                int col = Character.getNumericValue(possibleDestsPion[i].charAt(1));
+            for (int j = 0; j < possibleDestsPion.length; j++) {
+                int row = idLettreToInt(possibleDestsPion[j].charAt(0));
+                int col = Character.getNumericValue(possibleDestsPion[j].charAt(1));
 
                 if (row < BOARD_SIZE && col < SIZE && state[row][col] == VIDE) {
                     canPlay = true;
