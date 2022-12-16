@@ -1,10 +1,10 @@
 /**
  * StuckWin.java
- * Jeu créé lors de la SAE 101-102 pendant la S1 de 2022/2023
- * en BUT Informatique à l'IUT de Nord Franche-Comté.
+ * Jeu cree lors de la SAE 101-102 pendant la S1 de 2022/2023
+ * en BUT Informatique a l'IUT de Nord Franche-Comte.
  *
- * Le jeu se joue uniquement à l'aide d'un terminal.
- * A chaque partie commencée, un fichier CSV est créé et enregistre
+ * Le jeu se joue uniquement a l'aide d'un terminal.
+ * A chaque partie commencee, un fichier CSV est cree et enregistre
  * l'historique des mouvements faits par les joueurs.
  *
  * @author HUMBERT Ewan <ewan.humbert@edu.univ-fcomte.fr>
@@ -41,15 +41,15 @@ public class StuckWin {
             {'-', 'B', 'B', 'B', 'B', '-', '-', '-'},
     };
     static final String SPACE = "  ";
-    static final String CSV_ERROR = "Il y a eu une erreur pour l'écriture du CSV.";
+    static final String CSV_ERROR = "Il y a eu une erreur pour l'ecriture du CSV.";
 
     /**
-     * Déplace un pion ou simule son déplacement
-     * @param couleur couleur du pion à déplacer
+     * Deplace un pion ou simule son deplacement
+     * @param couleur couleur du pion a deplacer
      * @param lcSource case source Lc
      * @param lcDest case destination Lc
-     * @param mode ModeMVT.REAL/SIMU selon qu'on réalise effectivement le déplacement ou qu'on le simule seulement.
-     * @return enum {OK, BAD_COLOR, DEST_NOT_FREE, EMPTY_SRC, TOO_FAR, EXT_BOARD, EXIT} selon le déplacement
+     * @param mode ModeMVT.REAL/SIMU selon qu'on realise effectivement le deplacement ou qu'on le simule seulement.
+     * @return enum {OK, BAD_COLOR, DEST_NOT_FREE, EMPTY_SRC, TOO_FAR, EXT_BOARD, EXIT} selon le deplacement
      */
     Result deplace(char couleur, String lcSource, String lcDest, ModeMvt mode) {
         lcSource = lcSource.toUpperCase();
@@ -100,20 +100,20 @@ public class StuckWin {
     }
 
     /**
-     * Convertit une lettre en son numéro (ex : A => 1, C => 3)
+     * Convertit une lettre en son numero (ex : A => 1, C => 3)
      * @param idLettre
-     * @return un entier, le numéro de la lettre
+     * @return un entier, le numero de la lettre
      */
     public static int idLettreToInt(char idLettre) {
         return idLettre - 65;
     }
 
     /**
-     * Construit les trois chaînes représentant les positions accessibles (mais pas forcément valides)
-     * à partir de la position de départ [idLettre][idCol].
-     * @param couleur couleur du pion à jouer
-     * @param idLettre id de la ligne du pion à jouer
-     * @param idCol id de la colonne du pion à jouer
+     * Construit les trois chaînes representant les positions accessibles (mais pas forcement valides)
+     * a partir de la position de depart [idLettre][idCol].
+     * @param couleur couleur du pion a jouer
+     * @param idLettre id de la ligne du pion a jouer
+     * @param idCol id de la colonne du pion a jouer
      * @return tableau des trois positions jouables par le pion (redondance possible sur les bords)
      */
     String[] possibleDests(char couleur, int idLettre, int idCol) {
@@ -141,12 +141,12 @@ public class StuckWin {
     }
 
     /**
-     * Affiche le plateau de jeu dans la configuration portée par
-     * l'attribut d'état "state"
+     * Affiche le plateau de jeu dans la configuration portee par
+     * l'attribut d'etat "state"
      */
     void affiche() {
       for (int k = SIZE - 1; k >= 0; k--) {
-        // type tableau pour utiliser les passages par référence
+        // type tableau pour utiliser les passages par reference
         String[] row = {""};
 
         createRow(0, k, row);
@@ -155,7 +155,7 @@ public class StuckWin {
       }
 
       for (int l = 1; l < BOARD_SIZE; l++) {
-        // type tableau pour utiliser les passages par référence
+        // type tableau pour utiliser les passages par reference
         String[] row = {""};
 
         createRow(l, 0, row);
@@ -166,10 +166,10 @@ public class StuckWin {
 
     /**
      * Parcours la diagonale commençant/passant par l'element [i][j] du tableau 'state'
-     * et enregistre les éléments se trouvant sur la diagonale
-     * @param i coordonnée hozirontale
-     * @param j coordonnée verticale
-     * @param row les élements se trouvant sur la diagonale
+     * et enregistre les elements se trouvant sur la diagonale
+     * @param i coordonnee hozirontale
+     * @param j coordonnee verticale
+     * @param row les elements se trouvant sur la diagonale
      */
     void createRow(int i, int j, String[] row) {
       row[0] += state[i][j];
@@ -180,10 +180,10 @@ public class StuckWin {
     }
 
     /**
-     * Affiche de manière claire, ordonnée et coloriée une ligne du jeu
+     * Affiche de manière claire, ordonnee et coloriee une ligne du jeu
      * @param row une ligne du jeu
-     * @param lettre nombre servant à afficher les coordonnées de la case (sa lettre)
-     * @param chiffre nombre servant à afficher les coordonées de la case (son chiffre)
+     * @param lettre nombre servant a afficher les coordonnees de la case (sa lettre)
+     * @param chiffre nombre servant a afficher les coordonees de la case (son chiffre)
      */
     void printRow(String row, int lettre, int chiffre) {
       String[] characters = row.split("");
@@ -193,7 +193,7 @@ public class StuckWin {
       for (int i = 0; i < characters.length; i++) {
         String position = Character.toString((char)(65+lettre+i)) + (chiffre+i);
 
-        // on définit la couleur pour chaque case
+        // on definit la couleur pour chaque case
         switch (characters[i]) {
           case "R":
             result = result.append(ConsoleColors.RED_BACKGROUND + position + ConsoleColors.RESET + SPACE);
@@ -211,7 +211,7 @@ public class StuckWin {
         }
       }
 
-      // on ajoute des espaces à gauche pour centrer les pions à l'affichage
+      // on ajoute des espaces a gauche pour centrer les pions a l'affichage
       int nbCasesSurLigne = result.toString().split(SPACE).length;
 
       System.out.println(String.join("", Collections.nCopies(4 - nbCasesSurLigne, SPACE))
@@ -220,18 +220,18 @@ public class StuckWin {
 
     /**
      * Joue un tour
-     * @param couleur couleur du pion à jouer
-     * @return tableau contenant la position de départ et la destination du pion à jouer
+     * @param couleur couleur du pion a jouer
+     * @return tableau contenant la position de depart et la destination du pion a jouer
      */
     String[] jouerIA(char couleur) {
       // votre code ici. Supprimer la ligne ci-dessous.
-      throw new java.lang.UnsupportedOperationException("à compléter");
+      throw new java.lang.UnsupportedOperationException("a completer");
     }
 
     /**
      * Gère le jeu en fonction du joueur/couleur
      * @param couleur couleur du joueur jouant actuellement
-     * @return tableau de deux chaînes {source, destination} des pions à jouer
+     * @return tableau de deux chaînes {source, destination} des pions a jouer
      */
     String[] jouer(char couleur) {
         String src = "";
@@ -248,7 +248,7 @@ public class StuckWin {
     /**
      * Retourne 'R' ou 'B' si vainqueur, 'N' si partie pas finie
      * @param couleur couleur du prochain pion
-     * @return le résultat ('R', 'B' ou 'N')
+     * @return le resultat ('R', 'B' ou 'N')
      */
     char finPartie(char couleur) {
         int[][] pions = new int[13][2];
@@ -261,10 +261,10 @@ public class StuckWin {
     }
 
     /**
-     * Récupère les coordonnées de tous les pions bleu ou bien rouge selon le paramètre 'couleur'
-     * et les mets dans le tableau 'pions' donné en paramètre
-     * @param pions tableau qui va contenir les coordonnées des pions
-     * @param couleur couleur des pions à récupérer
+     * Recupère les coordonnees de tous les pions bleu ou bien rouge selon le paramètre 'couleur'
+     * et les mets dans le tableau 'pions' donne en paramètre
+     * @param pions tableau qui va contenir les coordonnees des pions
+     * @param couleur couleur des pions a recuperer
      */
     void getPions(int[][] pions, char couleur) {
         int index = 0;
@@ -285,11 +285,11 @@ public class StuckWin {
     }
 
     /**
-     * Parcours chaque pion de couleur et récupère les mouvements possibles
+     * Parcours chaque pion de couleur et recupère les mouvements possibles
      * que celui-ci peut faire
      * Si un des mouvements de ne serait-ce qu'un seul pion est valide
      * alors la partie n'est pas finie donc renvoie true
-     * @param pions tableau contenant les coordonnées des pions de couleur
+     * @param pions tableau contenant les coordonnees des pions de couleur
      * @param couleur couleur des pions
      * @return vrai si un des pions de couleur peut encore jouer/bouger, faux sinon
      */
@@ -315,17 +315,17 @@ public class StuckWin {
     }
 
     /**
-     * Créé un nouveau fichier CSV et initialise dedans le titre de chaque colonne
-     * @return le fichier CSV prêt à être utilisé
+     * Cree un nouveau fichier CSV et initialise dedans le titre de chaque colonne
+     * @return le fichier CSV prêt a être utilise
      */
     public static File createCSV() {
         int csvId = 0;
         String fileName;
         File f;
 
-        // on trouve un numéro pas déjà utilisé pour XX dans StuckWin_XX.csv
-        // afin de ne pas écrire dans un fichier qui existe déjà
-        // et créer un tout nouveau fichier CSV vierge
+        // on trouve un numero pas deja utilise pour XX dans StuckWin_XX.csv
+        // afin de ne pas ecrire dans un fichier qui existe deja
+        // et creer un tout nouveau fichier CSV vierge
         do {
             csvId++;
             fileName = "StuckWin_" + ((csvId < 10) ? ("0" + csvId) : (csvId)) + ".csv";
@@ -346,12 +346,12 @@ public class StuckWin {
     }
 
     /**
-     * Enregistre les données du mouvement en cours mises en paramètre dans le fichier CSV donné
-     * @param f le fichier CSV à écrire dedans
-     * @param couleur couleur ('B' ou 'R') du joueur ayant joué
-     * @param src coordonnée du pion source choisie par le joueur
-     * @param dest coordonnée du pion destination choisie par le joueur
-     * @param status état du mouvement fait
+     * Enregistre les donnees du mouvement en cours mises en paramètre dans le fichier CSV donne
+     * @param f le fichier CSV a ecrire dedans
+     * @param couleur couleur ('B' ou 'R') du joueur ayant joue
+     * @param src coordonnee du pion source choisie par le joueur
+     * @param dest coordonnee du pion destination choisie par le joueur
+     * @param status etat du mouvement fait
      */
     public static void writeCSV(File f, char couleur, String src, String dest, Result status) {
         try {
@@ -366,8 +366,8 @@ public class StuckWin {
     }
 
     /**
-     * Ecrit à la fin du fichier CSV donné le gagnant de la partie
-     * @param f le fichier CSV à écrire dedans
+     * Ecrit a la fin du fichier CSV donne le gagnant de la partie
+     * @param f le fichier CSV a ecrire dedans
      * @param winner chaîne de caractères disant qui est le gagnant
      */
     public static void writeWinnerCSV(File f, String winner) {
@@ -397,7 +397,7 @@ public class StuckWin {
 
         // version console
         do {
-              // séquence pour Bleu ou rouge
+              // sequence pour Bleu ou rouge
               jeu.affiche();
               do {
                   reponse = jeu.jouer(curCouleur);
