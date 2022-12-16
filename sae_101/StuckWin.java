@@ -203,7 +203,8 @@ public class StuckWin {
             result = result.append(ConsoleColors.BLUE_BACKGROUND + position + ConsoleColors.RESET + SPACE);
             break;
           case ".":
-            result = result.append(ConsoleColors.BLACK + ConsoleColors.WHITE_BACKGROUND + position + ConsoleColors.RESET + SPACE);
+            result = result.append(ConsoleColors.BLACK + ConsoleColors.WHITE_BACKGROUND
+                     + position + ConsoleColors.RESET + SPACE);
             break;
           default:
             result = result.append("");
