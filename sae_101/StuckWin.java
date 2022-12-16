@@ -165,7 +165,7 @@ public class StuckWin {
     }
 
     /**
-     * Parcours la diagonale commençant/passant par l'element [i][j] du tableau 'state'
+     * Parcours la diagonale commencant/passant par l'element [i][j] du tableau 'state'
      * et enregistre les elements se trouvant sur la diagonale
      * @param i coordonnee hozirontale
      * @param j coordonnee verticale
