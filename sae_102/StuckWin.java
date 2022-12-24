@@ -48,6 +48,7 @@ public class StuckWin {
             {'-', 'B', 'B', 'B', 'B', '.', '-', '-'},
             {'-', 'B', 'B', 'B', 'B', '-', '-', '-'},
     };
+    static final Random rand = new Random();
     static final String SPACE = "  ";
     static final String CSV_ERROR = "Il y a eu une erreur pour l'ecriture du CSV.";
 
@@ -239,8 +240,60 @@ public class StuckWin {
      * @return tableau contenant la position de depart et la destination du pion a jouer
      */
     String[] jouerIA(char couleur) {
-      // votre code ici. Supprimer la ligne ci-dessous.
-      throw new java.lang.UnsupportedOperationException("a completer");
+        int[][] pions = new int[13][2];
+        getPions(pions, couleur);
+
+        shufflePions(pions);
+
+        boolean canPlay = false;
+
+        int i = 0;
+        int row, col;
+        while (i < pions.length && !canPlay) {
+            String[] possibleDestsPion = possibleDests(couleur, pions[i][0], pions[i][1]);
+            shufflePossibleDests(possibleDestsPion);
+            for (int j = 0; j < possibleDestsPion.length; j++) {
+                int row = idLettreToInt(possibleDestsPion[j].charAt(0));
+                int col = Character.getNumericValue(possibleDestsPion[j].charAt(1));
+
+                if (
+                    row > 0 && col > 0 &&
+                    row < BOARD_SIZE && col < SIZE &&
+                    state[row][col] == VIDE
+                ) {
+                    canPlay = true;
+                    break;
+                }
+            }
+            i++;
+        }
+
+        return new String[]{validCase(pions[i-1][0], pions[i-1][1]), validCase(row, col)};
+    }
+
+    void shufflePions(int[][] pions) {
+        for (int i = 0; i < pions.length-1; i++) {
+            // genere un entier aleatoire entre [i-pions.length[
+            int r = rand.nextInt(pions.length - i) + i;
+
+            if (i == r) break;
+
+            int[] tmp = pions[i].clone();
+            pions[i] = pions[r];
+            pions[r] = tmp;
+        }
+    }
+
+    void shufflePossibleDests(String[] possibleDestsPion) {
+        for (int i = 0; i < possibleDestsPion.length-1; i++) {
+            int r = rand.nextInt(possibleDestsPion.length - i) + i;
+
+            if (i == r) break;
+
+            String tmp = possibleDestsPion[i];
+            possibleDestsPion[i] = possibleDestsPion[r];
+            possibleDestsPion[r] = tmp;
+        }
     }
 
     /**
