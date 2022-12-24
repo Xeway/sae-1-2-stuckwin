@@ -272,7 +272,11 @@ public class StuckWin {
         return new String[]{validCase(pions[i-1][0], pions[i-1][1]), validCase(row, col)};
     }
 
-    void shufflePions(int[][] pions) {
+    /**
+     * Melange le tableau 2D d'entiers donne en parametre
+     * @param pions le tableau 2D d'entiers a melanger
+     */
+    public static void shufflePions(int[][] pions) {
         for (int i = 0; i < pions.length-1; i++) {
             // genere un entier aleatoire entre [i-pions.length[
             int r = rand.nextInt(pions.length - i) + i;
@@ -285,7 +289,11 @@ public class StuckWin {
         }
     }
 
-    void shufflePossibleDests(String[] possibleDestsPion) {
+    /**
+     * Melange le tableau de strings donne en parametre
+     * @param possibleDestsPion le tableau de strings a melanger
+     */
+    public static void shufflePossibleDests(String[] possibleDestsPion) {
         for (int i = 0; i < possibleDestsPion.length-1; i++) {
             int r = rand.nextInt(possibleDestsPion.length - i) + i;
 
