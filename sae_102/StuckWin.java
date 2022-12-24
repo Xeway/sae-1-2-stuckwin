@@ -23,6 +23,7 @@
 
 import java.io.FileOutputStream;
 import java.util.Collections;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.io.File;
@@ -248,13 +249,13 @@ public class StuckWin {
         boolean canPlay = false;
 
         int i = 0;
-        int row, col;
+        int row = 0, col = 0;
         while (i < pions.length && !canPlay) {
             String[] possibleDestsPion = possibleDests(couleur, pions[i][0], pions[i][1]);
             shufflePossibleDests(possibleDestsPion);
             for (int j = 0; j < possibleDestsPion.length; j++) {
-                int row = idLettreToInt(possibleDestsPion[j].charAt(0));
-                int col = Character.getNumericValue(possibleDestsPion[j].charAt(1));
+                row = idLettreToInt(possibleDestsPion[j].charAt(0));
+                col = Character.getNumericValue(possibleDestsPion[j].charAt(1));
 
                 if (
                     row > 0 && col > 0 &&
@@ -304,11 +305,26 @@ public class StuckWin {
     String[] jouer(char couleur) {
         String src = "";
         String dst = "";
+        String[] mvtIa;
 
-        System.out.println("Mouvement " + couleur);
-        src = input.next();
-        dst = input.next();
-        System.out.println(src + "->" + dst);
+        switch(couleur) {
+            case 'B':
+                System.out.println("Mouvement " + couleur);
+                src = input.next();
+                dst = input.next();
+                System.out.println(src + "->" + dst);
+                break;
+            case 'R':
+                System.out.println("Mouvement " + couleur);
+                mvtIa = jouerIA(couleur);
+                src = mvtIa[0];
+                dst = mvtIa[1];
+                System.out.println(src + "->" + dst);
+                break;
+            default:
+                System.out.println("ERREUR COULEUR");
+                break;
+        }
 
         return new String[]{src, dst};
     }
