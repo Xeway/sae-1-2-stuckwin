@@ -242,7 +242,7 @@ public class StuckWin {
      */
     String[] jouerIA(char couleur) {
         int[][] pions = new int[13][2];
-        getPions(pions, couleur);
+        getPions(state, pions, couleur);
 
         shufflePions(pions);
 
@@ -269,7 +269,72 @@ public class StuckWin {
             i++;
         }
 
+        jouerIAMinimax(couleur, couleur, 0, state);
+
         return new String[]{validCase(pions[i-1][0], pions[i-1][1]), validCase(row, col)};
+    }
+
+    int[] jouerIAMinimax(char couleur, char curCouleur, int depth, char[][] simuState) {
+        int[][] pions = new int[13][2];
+        getPions(simuState, pions, curCouleur);
+
+        boolean canPlay = checkCanPlay(simuState, pions, couleur);
+
+        char p = canPlay ? 'N' : couleur;
+
+        if (p == couleur) {
+            return new int[]{1, 0, 0};
+        }
+        if (p != 'N') {
+            return new int[]{-1, 0, 0};
+        }
+
+        int bestScore = (couleur == curCouleur) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        int bestMoveX = 0;
+        int bestMoveY = 0;
+
+        boolean possible = false;
+
+        int row = 0, col = 0;
+        for (int i = 0; i < pions.length; i++) {
+            String[] possibleDestsPion = possibleDests(curCouleur, pions[i][0], pions[i][1]);
+            shufflePossibleDests(possibleDestsPion);
+            for (int j = 0; j < possibleDestsPion.length; j++) {
+                row = idLettreToInt(possibleDestsPion[j].charAt(0));
+                col = Character.getNumericValue(possibleDestsPion[j].charAt(1));
+
+                // on a trouvé une destination possible
+                if (
+                        row > 0 && col > 0 &&
+                        row < BOARD_SIZE && col < SIZE &&
+                        simuState[row][col] == VIDE
+                ) {
+                    possible = true;
+
+                    // fonction deplace
+                    simuState[row][col] = curCouleur;
+                    simuState[pions[i][0]][pions[i][1]] = VIDE;
+
+                    int[] score = jouerIAMinimax(couleur, (curCouleur == 'B') ? 'R' : 'B', depth+1, simuState);
+
+                    // undo
+                    simuState[row][col] = VIDE;
+                    simuState[pions[i][0]][pions[i][1]] = curCouleur;
+
+                    if (couleur == curCouleur && score[0] > bestScore) {
+                        bestScore = score[0];
+                        bestMoveX = row;
+                        bestMoveY = col;
+                    } else if (couleur != curCouleur && score[0] < bestScore) {
+                        bestScore = score[0];
+                        bestMoveX = row;
+                        bestMoveY = col;
+                    }
+                }
+            }
+        }
+
+        return possible ? new int[]{bestScore, bestMoveX, bestMoveY} : new int[]{0, 0, 0};
     }
 
     /**
@@ -342,12 +407,12 @@ public class StuckWin {
      * @param couleur couleur du prochain pion
      * @return le resultat ('R', 'B' ou 'N')
      */
-    char finPartie(char couleur) {
+    char finPartie(char[][] currentState, char couleur) {
         int[][] pions = new int[13][2];
 
-        getPions(pions, couleur);
+        getPions(currentState, pions, couleur);
 
-        boolean canPlay = checkCanPlay(pions, couleur);
+        boolean canPlay = checkCanPlay(currentState, pions, couleur);
 
         return canPlay ? 'N' : couleur;
     }
@@ -358,14 +423,14 @@ public class StuckWin {
      * @param pions tableau qui va contenir les coordonnees des pions
      * @param couleur couleur des pions a recuperer
      */
-    void getPions(int[][] pions, char couleur) {
+    void getPions(char[][] currentState, int[][] pions, char couleur) {
         int index = 0;
 
         int i = 0;
         while (i < BOARD_SIZE && index < pions.length) {
             int j = 0;
             while (j < SIZE && index < pions.length) {
-                if (state[i][j] == couleur) {
+                if (currentState[i][j] == couleur) {
                     pions[index][0] = i;
                     pions[index][1] = j;
                     index++;
@@ -385,7 +450,7 @@ public class StuckWin {
      * @param couleur couleur des pions
      * @return vrai si un des pions de couleur peut encore jouer/bouger, faux sinon
      */
-    boolean checkCanPlay(int[][] pions, char couleur) {
+    boolean checkCanPlay(char[][] currentState, int[][] pions, char couleur) {
         boolean canPlay = false;
 
         int i = 0;
@@ -396,9 +461,9 @@ public class StuckWin {
                 int col = Character.getNumericValue(possibleDestsPion[j].charAt(1));
 
                 if (
-                    row > 0 && col > 0 &&
+                    row >= 0 && col >= 0 &&
                     row < BOARD_SIZE && col < SIZE &&
-                    state[row][col] == VIDE
+                    currentState[row][col] == VIDE
                 ) {
                     canPlay = true;
                     break;
@@ -504,7 +569,7 @@ public class StuckWin {
                       return;
                   }
                   status = jeu.deplace(curCouleur, src, dest, ModeMvt.REAL);
-                  partie = jeu.finPartie(nextCouleur);
+                  partie = jeu.finPartie(jeu.state, nextCouleur);
                   writeCSV(csvFile, curCouleur, src, dest, status);
                   System.out.println("status : " + status + " partie : " + partie);
               } while (status != Result.OK && partie == 'N');
