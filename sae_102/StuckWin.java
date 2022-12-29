@@ -240,7 +240,19 @@ public class StuckWin {
      * @param couleur couleur du pion a jouer
      * @return tableau contenant la position de depart et la destination du pion a jouer
      */
-    String[] jouerIA(char couleur) {
+    String[] jouerIA(char couleur, int iaToChoose) {
+        String[] res;
+        if (iaToChoose == 1) {
+            res = jouerIANaive(couleur);
+        } else {
+            int[] r = jouerIAMinimax(couleur, couleur, 0, state);
+            res = new String[]{validCase(r[3], r[4]), validCase(r[1], r[2])};
+        }
+
+        return res;
+    }
+
+    String[] jouerIANaive(char couleur) {
         int[][] pions = new int[13][2];
         getPions(state, pions, couleur);
 
@@ -258,9 +270,9 @@ public class StuckWin {
                 col = Character.getNumericValue(possibleDestsPion[j].charAt(1));
 
                 if (
-                    row > 0 && col > 0 &&
-                    row < BOARD_SIZE && col < SIZE &&
-                    state[row][col] == VIDE
+                        row > 0 && col > 0 &&
+                        row < BOARD_SIZE && col < SIZE &&
+                        state[row][col] == VIDE
                 ) {
                     canPlay = true;
                     break;
@@ -268,8 +280,6 @@ public class StuckWin {
             }
             i++;
         }
-
-        jouerIAMinimax(couleur, couleur, 0, state);
 
         return new String[]{validCase(pions[i-1][0], pions[i-1][1]), validCase(row, col)};
     }
@@ -283,15 +293,17 @@ public class StuckWin {
         char p = canPlay ? 'N' : couleur;
 
         if (p == couleur) {
-            return new int[]{1, 0, 0};
+            return new int[]{1, 0, 0, 0};
         }
         if (p != 'N') {
-            return new int[]{-1, 0, 0};
+            return new int[]{-1, 0, 0, 0};
         }
 
         int bestScore = (couleur == curCouleur) ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         int bestMoveX = 0;
         int bestMoveY = 0;
+        int srcBestMoveX = 0;
+        int srcBestMoveY = 0;
 
         boolean possible = false;
 
@@ -321,20 +333,21 @@ public class StuckWin {
                     simuState[row][col] = VIDE;
                     simuState[pions[i][0]][pions[i][1]] = curCouleur;
 
-                    if (couleur == curCouleur && score[0] > bestScore) {
+                    if (
+                            (couleur == curCouleur && score[0] > bestScore) ||
+                            (couleur != curCouleur && score[0] < bestScore)
+                    ) {
                         bestScore = score[0];
                         bestMoveX = row;
                         bestMoveY = col;
-                    } else if (couleur != curCouleur && score[0] < bestScore) {
-                        bestScore = score[0];
-                        bestMoveX = row;
-                        bestMoveY = col;
+                        srcBestMoveX = pions[i][0];
+                        srcBestMoveX = pions[i][1];
                     }
                 }
             }
         }
 
-        return possible ? new int[]{bestScore, bestMoveX, bestMoveY} : new int[]{0, 0, 0};
+        return new int[]{possible ? bestScore : 0, bestMoveX, bestMoveY, srcBestMoveX, srcBestMoveY};
     }
 
     /**
@@ -375,7 +388,7 @@ public class StuckWin {
      * @param couleur couleur du joueur jouant actuellement
      * @return tableau de deux chaines {source, destination} des pions a jouer
      */
-    String[] jouer(char couleur) {
+    String[] jouer(char couleur, int iaToChoose) {
         String src = "";
         String dst = "";
         String[] mvtIa;
@@ -389,7 +402,7 @@ public class StuckWin {
                 break;
             case 'R':
                 System.out.println("Mouvement " + couleur);
-                mvtIa = jouerIA(couleur);
+                mvtIa = jouerIA(couleur, iaToChoose);
                 src = mvtIa[0];
                 dst = mvtIa[1];
                 System.out.println(src + "->" + dst);
@@ -561,7 +574,7 @@ public class StuckWin {
               // sequence pour Bleu ou rouge
               jeu.affiche();
               do {
-                  reponse = jeu.jouer(curCouleur);
+                  reponse = jeu.jouer(curCouleur, Integer.parseInt(args[0]));
                   src = reponse[0];
                   dest = reponse[1];
                   if ("q".equals(src)) {
