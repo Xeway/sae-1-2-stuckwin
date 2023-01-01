@@ -252,7 +252,8 @@ public class StuckWin {
             case "2":
                 return jouerIAMCTS(state, couleur);
             default:
-                System.out.println("Erreur : Choix de l'IA invalide (1 pour IA naive, 2 pour \"vraie\" IA).");
+                System.out.println("Erreur : Choix de l'IA invalide "
+                                 + "(1 pour IA naive, 2 pour IA MCTS, 3 pour IA naive vs MCTS).");
                 System.exit(0);
                 return new String[]{"", ""};
         }
@@ -430,13 +431,19 @@ public class StuckWin {
         switch(couleur) {
             case 'B':
                 System.out.println("Mouvement " + couleur);
-                src = input.next();
-                dst = input.next();
+                if (typeIA.equals("3")) {
+                    mvtIa = jouerIA(couleur, "1");
+                    src = mvtIa[0];
+                    dst = mvtIa[1];
+                } else {
+                    src = input.next();
+                    dst = input.next();
+                }
                 System.out.println(src + "->" + dst);
                 break;
             case 'R':
                 System.out.println("Mouvement " + couleur);
-                mvtIa = jouerIA(couleur, typeIA);
+                mvtIa = jouerIA(couleur, typeIA.equals("3") ? "2" : typeIA);
                 src = mvtIa[0];
                 dst = mvtIa[1];
                 System.out.println(src + "->" + dst);
