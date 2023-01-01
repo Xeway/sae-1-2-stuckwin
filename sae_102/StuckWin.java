@@ -258,7 +258,7 @@ public class StuckWin {
                 col = Character.getNumericValue(possibleDestsPion[j].charAt(1));
 
                 if (
-                    row > 0 && col > 0 &&
+                    row >= 0 && col >= 0 &&
                     row < BOARD_SIZE && col < SIZE &&
                     state[row][col] == VIDE
                 ) {
@@ -396,7 +396,7 @@ public class StuckWin {
                 int col = Character.getNumericValue(possibleDestsPion[j].charAt(1));
 
                 if (
-                    row > 0 && col > 0 &&
+                    row >= 0 && col >= 0 &&
                     row < BOARD_SIZE && col < SIZE &&
                     state[row][col] == VIDE
                 ) {
