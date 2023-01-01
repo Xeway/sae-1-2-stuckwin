@@ -244,7 +244,20 @@ public class StuckWin {
      * @param couleur couleur du pion a jouer
      * @return tableau contenant la position de depart et la destination du pion a jouer
      */
-    String[] jouerIA(char couleur) {
+    String[] jouerIA(char couleur, String typeIA) {
+        switch (typeIA) {
+            case "1":
+                return jouerIANaive(couleur);
+            case "2":
+                return jouerIAMCTS(state, couleur);
+            default:
+                System.out.println("Erreur : Choix de l'IA invalide (1 pour IA naive, 2 pour \"vraie\" IA).");
+                System.exit(0);
+                return new String[]{"", ""};
+        }
+    }
+
+    String[] jouerIANaive(char couleur) {
         ArrayList<int[][]> possibleMoves = getAllPossibleMoves(state, couleur);
 
         // genere un entier aleatoire entre [0-possibleMoves.size()[
@@ -258,7 +271,7 @@ public class StuckWin {
         };
     }
 
-    int[][] jouerIAMCTS(char[][] simuState, char couleur) {
+    String[] jouerIAMCTS(char[][] simuState, char couleur) {
         // stores scores for each simuations
         HashMap<String, Integer> evaluations = new HashMap<>();
 
@@ -275,7 +288,7 @@ public class StuckWin {
             ArrayList<int[][]> possibleMoves = getAllPossibleMoves(stateCopy, player);
 
             boolean firstIteration = true;
-            char[][] firstMove = new char[(int)BOARD_SIZE][(int)SIZE];
+            int[][] firstMove = new int[2][2];
 
             while (!possibleMoves.isEmpty()) {
                 // genere un entier aleatoire entre [0-possibleMoves.size()[
@@ -289,7 +302,7 @@ public class StuckWin {
                 stateCopy[randMove[1][0]][randMove[1][1]] = player;
 
                 if (firstIteration) {
-                    firstMove = stateCopy;
+                    firstMove = randMove;
                 }
 
                 if (finPartie(stateCopy, player) == player) break;
@@ -326,7 +339,10 @@ public class StuckWin {
             }
         }
 
-        return bestMove;
+        return new String[]{
+            validCase(bestMove[0][0], bestMove[0][1]),
+            validCase(bestMove[1][0], bestMove[1][1])
+        };
     }
 
     public static int[][] fromString(String s) {
@@ -380,7 +396,7 @@ public class StuckWin {
      * @param couleur couleur du joueur jouant actuellement
      * @return tableau de deux chaines {source, destination} des pions a jouer
      */
-    String[] jouer(char couleur) {
+    String[] jouer(char couleur, String typeIA) {
         String src = "";
         String dst = "";
         String[] mvtIa;
@@ -394,7 +410,7 @@ public class StuckWin {
                 break;
             case 'R':
                 System.out.println("Mouvement " + couleur);
-                mvtIa = jouerIA(couleur);
+                mvtIa = jouerIA(couleur, typeIA);
                 src = mvtIa[0];
                 dst = mvtIa[1];
                 System.out.println(src + "->" + dst);
@@ -566,7 +582,7 @@ public class StuckWin {
               // sequence pour Bleu ou rouge
               jeu.affiche();
               do {
-                  reponse = jeu.jouer(curCouleur);
+                  reponse = jeu.jouer(curCouleur, args[0]);
                   src = reponse[0];
                   dest = reponse[1];
                   if ("q".equals(src)) {
