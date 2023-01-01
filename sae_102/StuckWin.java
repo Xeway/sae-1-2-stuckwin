@@ -215,19 +215,19 @@ public class StuckWin {
         // on definit la couleur pour chaque case
         switch (characters[i]) {
           case "R":
-            result = result.append(ConsoleColors.RED_BACKGROUND + position
+            result.append(ConsoleColors.RED_BACKGROUND + position
                                    + ConsoleColors.RESET + SPACE);
             break;
           case "B":
-            result = result.append(ConsoleColors.BLUE_BACKGROUND + position
+            result.append(ConsoleColors.BLUE_BACKGROUND + position
                                    + ConsoleColors.RESET + SPACE);
             break;
           case ".":
-            result = result.append(ConsoleColors.BLACK + ConsoleColors.WHITE_BACKGROUND
-                     + position + ConsoleColors.RESET + SPACE);
+            result.append(ConsoleColors.BLACK + ConsoleColors.WHITE_BACKGROUND
+                          + position + ConsoleColors.RESET + SPACE);
             break;
           default:
-            result = result.append("");
+            result.append("");
             break;
         }
       }
@@ -315,7 +315,7 @@ public class StuckWin {
                 firstIteration = false;
             }
 
-            String firstMoveKey = Arrays.deepToString(firstMove);
+            String firstMoveKey = arrToStr(firstMove);
 
             if (player == 'B' && finPartie(stateCopy, player) == player)
                 score *= -1;
@@ -327,17 +327,19 @@ public class StuckWin {
             }
         }
 
-        int[][] bestMove = new int[2][2];
+        String bestMoveKey = "";
         int bestScore = 0;
         boolean firstRound = true;
 
         for (Map.Entry<String, Integer> entry : evaluations.entrySet()) {
             if (firstRound || entry.getValue() > bestScore) {
                 bestScore = entry.getValue();
-                bestMove = fromString(entry.getKey());
+                bestMoveKey = entry.getKey();
                 firstRound = false;
             }
         }
+
+        int[][] bestMove = strToArr(bestMoveKey);
 
         return new String[]{
             validCase(bestMove[0][0], bestMove[0][1]),
@@ -345,17 +347,40 @@ public class StuckWin {
         };
     }
 
-    public static int[][] fromString(String s) {
-        String[] rows = s.substring(1, s.length() - 1).split("\n");
-        int[][] arr = new int[rows.length][];
-        for (int i = 0; i < rows.length; i++) {
-            String[] elements = rows[i].substring(1, rows[i].length() - 1).split(",");
-            arr[i] = new int[elements.length];
-            for (int j = 0; j < elements.length; j++) {
-                arr[i][j] = Integer.parseInt(elements[j]);
+    public static String arrToStr(int[][] arr) {
+        StringBuilder result = new StringBuilder("");
+
+        for (int i = 0; i < arr.length; i++) {
+            for (int j = 0; j < arr[i].length; j++) {
+                result.append(arr[i][j]);
+                if (j < arr[i].length - 1) {
+                    result.append("-");
+                }
+            }
+
+            if (i < arr.length - 1) {
+                result.append("/");
             }
         }
-        return arr;
+
+        return result.toString();
+    }
+
+    public static int[][] strToArr(String str) {
+        int[][] result;
+
+        String[] rows = str.split("/");
+        result = new int[rows.length][];
+        for (int i = 0; i < rows.length; i++) {
+            String[] elements = rows[i].split("-");
+
+            result[i] = new int[elements.length];
+            for (int j = 0; j < elements.length; j++) {
+                result[i][j] = Integer.parseInt(elements[j]);
+            }
+        }
+
+        return result;
     }
 
     ArrayList<int[][]> getAllPossibleMoves(char[][] currentState, char couleur) {
