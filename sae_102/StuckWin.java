@@ -56,7 +56,7 @@ public class StuckWin {
     static final Random rand = new Random();
     static final String SPACE = "  ";
     static final String CSV_ERROR = "Il y a eu une erreur pour l'ecriture du CSV.";
-    static final int NUMBER_OF_SIMULATIONS = 200;
+    static final int NUMBER_OF_SIMULATIONS = 500;
 
     /**
      * Deplace un pion ou simule son deplacement
@@ -279,7 +279,7 @@ public class StuckWin {
         for (int i = 0; i < NUMBER_OF_SIMULATIONS; i++) {
             char player = couleur;
 
-            char[][] stateCopy = new char[(int)BOARD_SIZE][(int)SIZE];
+            char[][] stateCopy = new char[(int)BOARD_SIZE][];
             for (int x = 0; x < BOARD_SIZE; x++) {
                 stateCopy[x] = state[x].clone();
             }
@@ -318,7 +318,7 @@ public class StuckWin {
 
             String firstMoveKey = arrToStr(firstMove);
 
-            if (player == 'B' && finPartie(stateCopy, player) == player)
+            if (player != couleur && finPartie(stateCopy, player) == player)
                 score *= -1;
 
             if (evaluations.containsKey(firstMoveKey)) {
