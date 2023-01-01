@@ -242,34 +242,6 @@ public class StuckWin {
      * @return tableau contenant la position de depart et la destination du pion a jouer
      */
     String[] jouerIA(char couleur) {
-        int[][] pions = new int[13][2];
-        getPions(pions, couleur);
-
-        shufflePions(pions);
-
-        boolean canPlay = false;
-
-        int i = 0;
-        int row = 0, col = 0;
-        while (i < pions.length && !canPlay) {
-            String[] possibleDestsPion = possibleDests(couleur, pions[i][0], pions[i][1]);
-            shufflePossibleDests(possibleDestsPion);
-            for (int j = 0; j < possibleDestsPion.length; j++) {
-                row = idLettreToInt(possibleDestsPion[j].charAt(0));
-                col = Character.getNumericValue(possibleDestsPion[j].charAt(1));
-
-                if (
-                    row >= 0 && col >= 0 &&
-                    row < BOARD_SIZE && col < SIZE &&
-                    state[row][col] == VIDE
-                ) {
-                    canPlay = true;
-                    break;
-                }
-            }
-            i++;
-        }
-
         ArrayList<int[][]> possibleMoves = getAllPossibleMoves(couleur);
 
         // genere un entier aleatoire entre [0-possibleMoves.size()[
