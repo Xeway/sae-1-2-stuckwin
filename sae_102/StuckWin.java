@@ -56,6 +56,7 @@ public class StuckWin {
     static final Random rand = new Random();
     static final String SPACE = "  ";
     static final String CSV_ERROR = "Il y a eu une erreur pour l'ecriture du CSV.";
+    static final int NUMBER_OF_SIMULATIONS = 200;
 
     /**
      * Deplace un pion ou simule son deplacement
@@ -275,7 +276,7 @@ public class StuckWin {
         // stores scores for each simuations
         HashMap<String, Integer> evaluations = new HashMap<>();
 
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < NUMBER_OF_SIMULATIONS; i++) {
             char player = couleur;
 
             char[][] stateCopy = new char[(int)BOARD_SIZE][(int)SIZE];
