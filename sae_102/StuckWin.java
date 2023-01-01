@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
+import java.util.ArrayList;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -269,40 +270,48 @@ public class StuckWin {
             i++;
         }
 
-        return new String[]{validCase(pions[i-1][0], pions[i-1][1]), validCase(row, col)};
+        ArrayList<int[][]> possibleMoves = getAllPossibleMoves(couleur);
+
+        // genere un entier aleatoire entre [0-possibleMoves.size()[
+        int r = rand.nextInt(possibleMoves.size());
+
+        return new String[]{
+            validCase(possibleMoves.get(r)[0][0], possibleMoves.get(r)[0][1]),
+            validCase(possibleMoves.get(r)[1][0], possibleMoves.get(r)[1][1])
+        };
     }
 
-    /**
-     * Melange le tableau 2D d'entiers donne en parametre
-     * @param pions le tableau 2D d'entiers a melanger
-     */
-    public static void shufflePions(int[][] pions) {
-        for (int i = 0; i < pions.length-1; i++) {
-            // genere un entier aleatoire entre [i-pions.length[
-            int r = rand.nextInt(pions.length - i) + i;
+    ArrayList<int[][]> getAllPossibleMoves(char couleur) {
+        int[][] pions = new int[13][2];
+        getPions(pions, couleur);
 
-            if (i == r) break;
+        ArrayList<int[][]> possibleMoves = new ArrayList<>();
 
-            int[] tmp = pions[i].clone();
-            pions[i] = pions[r];
-            pions[r] = tmp;
+        for (int i = 0; i < pions.length; i++) {
+            String[] possibleDestsPion = possibleDests(couleur, pions[i][0], pions[i][1]);
+            for (int j = 0; j < possibleDestsPion.length; j++) {
+                int row = idLettreToInt(possibleDestsPion[j].charAt(0));
+                int col = Character.getNumericValue(possibleDestsPion[j].charAt(1));
+
+                if (
+                    row >= 0 && col >= 0 &&
+                    row < BOARD_SIZE && col < SIZE &&
+                    state[row][col] == VIDE
+                ) {
+                    int[][] p = new int[2][2];
+                    // source
+                    p[0][0] = pions[i][0];
+                    p[0][1] = pions[i][1];
+                    // dest
+                    p[1][0] = row;
+                    p[1][1] = col;
+
+                    possibleMoves.add(p);
+                }
+            }
         }
-    }
 
-    /**
-     * Melange le tableau de strings donne en parametre
-     * @param possibleDestsPion le tableau de strings a melanger
-     */
-    public static void shufflePossibleDests(String[] possibleDestsPion) {
-        for (int i = 0; i < possibleDestsPion.length-1; i++) {
-            int r = rand.nextInt(possibleDestsPion.length - i) + i;
-
-            if (i == r) break;
-
-            String tmp = possibleDestsPion[i];
-            possibleDestsPion[i] = possibleDestsPion[r];
-            possibleDestsPion[r] = tmp;
-        }
+        return possibleMoves;
     }
 
     /**
