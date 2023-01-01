@@ -27,6 +27,9 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -242,20 +245,106 @@ public class StuckWin {
      * @return tableau contenant la position de depart et la destination du pion a jouer
      */
     String[] jouerIA(char couleur) {
-        ArrayList<int[][]> possibleMoves = getAllPossibleMoves(couleur);
+        ArrayList<int[][]> possibleMoves = getAllPossibleMoves(state, couleur);
 
         // genere un entier aleatoire entre [0-possibleMoves.size()[
         int r = rand.nextInt(possibleMoves.size());
 
+        int[][] randMove = possibleMoves.get(r);
+
         return new String[]{
-            validCase(possibleMoves.get(r)[0][0], possibleMoves.get(r)[0][1]),
-            validCase(possibleMoves.get(r)[1][0], possibleMoves.get(r)[1][1])
+            validCase(randMove[0][0], randMove[0][1]),
+            validCase(randMove[1][0], randMove[1][1])
         };
     }
 
-    ArrayList<int[][]> getAllPossibleMoves(char couleur) {
+    int[][] jouerIAMCTS(char[][] simuState, char couleur) {
+        // stores scores for each simuations
+        HashMap<String, Integer> evaluations = new HashMap<>();
+
+        for (int i = 0; i < 200; i++) {
+            char player = couleur;
+
+            char[][] stateCopy = new char[(int)BOARD_SIZE][(int)SIZE];
+            for (int x = 0; x < BOARD_SIZE; x++) {
+                stateCopy[x] = state[x].clone();
+            }
+
+            int score = (int)(BOARD_SIZE * SIZE);
+
+            ArrayList<int[][]> possibleMoves = getAllPossibleMoves(stateCopy, player);
+
+            boolean firstIteration = true;
+            char[][] firstMove = new char[(int)BOARD_SIZE][(int)SIZE];
+
+            while (!possibleMoves.isEmpty()) {
+                // genere un entier aleatoire entre [0-possibleMoves.size()[
+                int r = rand.nextInt(possibleMoves.size());
+
+                int[][] randMove = possibleMoves.get(r);
+
+                // src
+                stateCopy[randMove[0][0]][randMove[0][1]] = VIDE;
+                // dest
+                stateCopy[randMove[1][0]][randMove[1][1]] = player;
+
+                if (firstIteration) {
+                    firstMove = stateCopy;
+                }
+
+                if (finPartie(stateCopy, player) == player) break;
+
+                score--;
+
+                player = (player == 'R') ? 'B' : 'R';
+                possibleMoves = getAllPossibleMoves(stateCopy, player);
+
+                firstIteration = false;
+            }
+
+            String firstMoveKey = Arrays.deepToString(firstMove);
+
+            if (player == 'B' && finPartie(stateCopy, player) == player)
+                score *= -1;
+
+            if (evaluations.containsKey(firstMoveKey)) {
+                evaluations.put(firstMoveKey, evaluations.get(firstMoveKey) + score);
+            } else {
+                evaluations.put(firstMoveKey, score);
+            }
+        }
+
+        int[][] bestMove = new int[2][2];
+        int bestScore = 0;
+        boolean firstRound = true;
+
+        for (Map.Entry<String, Integer> entry : evaluations.entrySet()) {
+            if (firstRound || entry.getValue() > bestScore) {
+                bestScore = entry.getValue();
+                bestMove = fromString(entry.getKey());
+                firstRound = false;
+            }
+        }
+
+        return bestMove;
+    }
+
+    public static int[][] fromString(String s) {
+        String[] rows = s.substring(1, s.length() - 1).split("\n");
+        int[][] arr = new int[rows.length][];
+        for (int i = 0; i < rows.length; i++) {
+            String[] elements = rows[i].substring(1, rows[i].length() - 1).split(",");
+            arr[i] = new int[elements.length];
+            for (int j = 0; j < elements.length; j++) {
+                arr[i][j] = Integer.parseInt(elements[j]);
+            }
+        }
+        return arr;
+    }
+
+    ArrayList<int[][]> getAllPossibleMoves(char[][] currentState, char couleur) {
         int[][] pions = new int[13][2];
-        getPions(pions, couleur);
+        getPions(currentState, pions, couleur);
 
         ArrayList<int[][]> possibleMoves = new ArrayList<>();
 
@@ -268,7 +357,7 @@ public class StuckWin {
                 if (
                     row >= 0 && col >= 0 &&
                     row < BOARD_SIZE && col < SIZE &&
-                    state[row][col] == VIDE
+                    currentState[row][col] == VIDE
                 ) {
                     int[][] p = new int[2][2];
                     // source
@@ -323,12 +412,12 @@ public class StuckWin {
      * @param couleur couleur du prochain pion
      * @return le resultat ('R', 'B' ou 'N')
      */
-    char finPartie(char couleur) {
+    char finPartie(char[][] currentState, char couleur) {
         int[][] pions = new int[13][2];
 
-        getPions(pions, couleur);
+        getPions(currentState, pions, couleur);
 
-        boolean canPlay = checkCanPlay(pions, couleur);
+        boolean canPlay = checkCanPlay(currentState, pions, couleur);
 
         return canPlay ? 'N' : couleur;
     }
@@ -339,14 +428,14 @@ public class StuckWin {
      * @param pions tableau qui va contenir les coordonnees des pions
      * @param couleur couleur des pions a recuperer
      */
-    void getPions(int[][] pions, char couleur) {
+    void getPions(char[][] currentState, int[][] pions, char couleur) {
         int index = 0;
 
         int i = 0;
         while (i < BOARD_SIZE && index < pions.length) {
             int j = 0;
             while (j < SIZE && index < pions.length) {
-                if (state[i][j] == couleur) {
+                if (currentState[i][j] == couleur) {
                     pions[index][0] = i;
                     pions[index][1] = j;
                     index++;
@@ -366,7 +455,7 @@ public class StuckWin {
      * @param couleur couleur des pions
      * @return vrai si un des pions de couleur peut encore jouer/bouger, faux sinon
      */
-    boolean checkCanPlay(int[][] pions, char couleur) {
+    boolean checkCanPlay(char[][] currentState, int[][] pions, char couleur) {
         boolean canPlay = false;
 
         int i = 0;
@@ -379,7 +468,7 @@ public class StuckWin {
                 if (
                     row >= 0 && col >= 0 &&
                     row < BOARD_SIZE && col < SIZE &&
-                    state[row][col] == VIDE
+                    currentState[row][col] == VIDE
                 ) {
                     canPlay = true;
                     break;
@@ -485,7 +574,7 @@ public class StuckWin {
                       return;
                   }
                   status = jeu.deplace(curCouleur, src, dest, ModeMvt.REAL);
-                  partie = jeu.finPartie(nextCouleur);
+                  partie = jeu.finPartie(jeu.state, nextCouleur);
                   writeCSV(csvFile, curCouleur, src, dest, status);
                   System.out.println("status : " + status + " partie : " + partie);
               } while (status != Result.OK && partie == 'N');
