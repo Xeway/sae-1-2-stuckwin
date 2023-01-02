@@ -601,11 +601,11 @@ public class StuckWin {
     public static void main(String[] args) {
         Locale.setDefault(new Locale("en", "US"));
 
-        File f = new File("winrate.csv");
+        File f = new File("moves_counter.csv");
         try {
             PrintWriter csv = new PrintWriter(f);
 
-            csv.println("Number of simulations,Winrate");
+            csv.println("Number of simulations,Number of moves");
 
             csv.close();
         } catch (IOException e) {
@@ -613,7 +613,7 @@ public class StuckWin {
         }
 
         for (int nbSimu = 1; nbSimu <= 1500;) {
-            double winrate = 0.0;
+            double movesCounter = 0.0;
             for (int i = 0; i < 200; i++) {
                 StuckWin jeu = new StuckWin();
                 String src = "";
@@ -652,14 +652,14 @@ public class StuckWin {
                 String winnerResult = "Victoire : " + partie + " (" + (cpt / 2) + " coups)";
                 // writeWinnerCSV(csvFile, winnerResult);
                 System.out.printf(winnerResult);
-                if (partie == 'R') winrate++;
+                movesCounter += (cpt / 2);
             }
-            winrate = (winrate*100)/200;
+            movesCounter /= 200;
 
             try {
                 PrintWriter csv = new PrintWriter(new FileOutputStream(f, true));
 
-                csv.printf("%d,%.2f%n", nbSimu, winrate);
+                csv.printf("%d,%.2f%n", nbSimu, movesCounter);
 
                 csv.close();
             } catch (IOException e) {
