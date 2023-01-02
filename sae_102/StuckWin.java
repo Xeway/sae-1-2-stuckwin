@@ -33,6 +33,7 @@ import java.util.Map;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.IOException;
+import java.util.Locale;
 
 public class StuckWin {
     static final Scanner input = new Scanner(System.in);
@@ -245,12 +246,12 @@ public class StuckWin {
      * @param couleur couleur du pion a jouer
      * @return tableau contenant la position de depart et la destination du pion a jouer
      */
-    String[] jouerIA(char couleur, String typeIA) {
+    String[] jouerIA(char couleur, String typeIA, int nbSimu) {
         switch (typeIA) {
             case "1":
                 return jouerIANaive(couleur);
             case "2":
-                return jouerIAMCTS(state, couleur);
+                return jouerIAMCTS(state, couleur, nbSimu);
             default:
                 System.out.println("Erreur : Choix de l'IA invalide "
                                  + "(1 pour IA naive, 2 pour IA MCTS, 3 pour IA naive vs MCTS).");
@@ -273,11 +274,11 @@ public class StuckWin {
         };
     }
 
-    String[] jouerIAMCTS(char[][] simuState, char couleur) {
+    String[] jouerIAMCTS(char[][] simuState, char couleur, int nbSimu) {
         // stores scores for each simuations
         HashMap<String, Integer> evaluations = new HashMap<>();
 
-        for (int i = 0; i < NUMBER_OF_SIMULATIONS; i++) {
+        for (int i = 0; i < nbSimu; i++) {
             char player = couleur;
 
             char[][] stateCopy = new char[(int)BOARD_SIZE][];
@@ -423,7 +424,7 @@ public class StuckWin {
      * @param couleur couleur du joueur jouant actuellement
      * @return tableau de deux chaines {source, destination} des pions a jouer
      */
-    String[] jouer(char couleur, String typeIA) {
+    String[] jouer(char couleur, String typeIA, int nbSimu) {
         String src = "";
         String dst = "";
         String[] mvtIa;
@@ -432,7 +433,7 @@ public class StuckWin {
             case 'B':
                 System.out.println("Mouvement " + couleur);
                 if (typeIA.equals("3")) {
-                    mvtIa = jouerIA(couleur, "1");
+                    mvtIa = jouerIA(couleur, "1", nbSimu);
                     src = mvtIa[0];
                     dst = mvtIa[1];
                 } else {
@@ -443,7 +444,7 @@ public class StuckWin {
                 break;
             case 'R':
                 System.out.println("Mouvement " + couleur);
-                mvtIa = jouerIA(couleur, typeIA.equals("3") ? "2" : typeIA);
+                mvtIa = jouerIA(couleur, typeIA.equals("3") ? "2" : typeIA, nbSimu);
                 src = mvtIa[0];
                 dst = mvtIa[1];
                 System.out.println(src + "->" + dst);
@@ -598,42 +599,74 @@ public class StuckWin {
     }
 
     public static void main(String[] args) {
-        StuckWin jeu = new StuckWin();
-        String src = "";
-        String dest;
-        String[] reponse;
-        Result status;
-        char partie;
-        char curCouleur = jeu.joueurs[0];
-        char nextCouleur = jeu.joueurs[1];
-        char tmp;
-        int cpt = 0;
-        File csvFile = createCSV();
+        Locale.setDefault(new Locale("en", "US"));
 
-        // version console
-        do {
-              // sequence pour Bleu ou rouge
-              jeu.affiche();
-              do {
-                  reponse = jeu.jouer(curCouleur, args[0]);
-                  src = reponse[0];
-                  dest = reponse[1];
-                  if ("q".equals(src)) {
-                      writeWinnerCSV(csvFile, "Partie interrompue");
-                      return;
-                  }
-                  status = jeu.deplace(curCouleur, src, dest, ModeMvt.REAL);
-                  partie = jeu.finPartie(jeu.state, nextCouleur);
-                  writeCSV(csvFile, curCouleur, src, dest, status);
-                  System.out.println("status : " + status + " partie : " + partie);
-              } while (status != Result.OK && partie == 'N');
-              tmp = curCouleur;
-              curCouleur = nextCouleur;
-              nextCouleur = tmp;
-              cpt++;
-        } while (partie == 'N');
-        String winnerResult = "Victoire : " + partie + " (" + (cpt/2) + " coups)";
-        writeWinnerCSV(csvFile, winnerResult);
-        System.out.printf(winnerResult);
+        File f = new File("winrate.csv");
+        try {
+            PrintWriter csv = new PrintWriter(f);
+
+            csv.println("Number of simulations,Winrate");
+
+            csv.close();
+        } catch (IOException e) {
+            System.out.println(CSV_ERROR);
+        }
+
+        for (int nbSimu = 1; nbSimu <= 1500;) {
+            double winrate = 0.0;
+            for (int i = 0; i < 200; i++) {
+                StuckWin jeu = new StuckWin();
+                String src = "";
+                String dest;
+                String[] reponse;
+                Result status;
+                char partie;
+                char curCouleur = jeu.joueurs[0];
+                char nextCouleur = jeu.joueurs[1];
+                char tmp;
+                int cpt = 0;
+                // File csvFile = createCSV();
+
+                // version console
+                do {
+                    // sequence pour Bleu ou rouge
+                    // jeu.affiche();
+                    do {
+                        reponse = jeu.jouer(curCouleur, args[0], nbSimu);
+                        src = reponse[0];
+                        dest = reponse[1];
+                        if ("q".equals(src)) {
+                            // writeWinnerCSV(csvFile, "Partie interrompue");
+                            return;
+                        }
+                        status = jeu.deplace(curCouleur, src, dest, ModeMvt.REAL);
+                        partie = jeu.finPartie(jeu.state, nextCouleur);
+                        // writeCSV(csvFile, curCouleur, src, dest, status);
+                        System.out.println("status : " + status + " partie : " + partie);
+                    } while (status != Result.OK && partie == 'N');
+                    tmp = curCouleur;
+                    curCouleur = nextCouleur;
+                    nextCouleur = tmp;
+                    cpt++;
+                } while (partie == 'N');
+                String winnerResult = "Victoire : " + partie + " (" + (cpt / 2) + " coups)";
+                // writeWinnerCSV(csvFile, winnerResult);
+                System.out.printf(winnerResult);
+                if (partie == 'R') winrate++;
+            }
+            winrate = (winrate*100)/200;
+
+            try {
+                PrintWriter csv = new PrintWriter(new FileOutputStream(f, true));
+
+                csv.printf("%d,%.2f%n", nbSimu, winrate);
+
+                csv.close();
+            } catch (IOException e) {
+                System.out.println(CSV_ERROR);
+            }
+
+            nbSimu += (nbSimu < 10) ? 1 : 30;
+        }
     }
 }
