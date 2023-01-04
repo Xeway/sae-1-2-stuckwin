@@ -243,6 +243,7 @@ public class StuckWin {
     /**
      * Joue un tour
      * @param couleur couleur du pion a jouer
+     * @param typeIA type d'IA a jouer (1, 2 ou 3)
      * @return tableau contenant la position de depart et la destination du pion a jouer
      */
     String[] jouerIA(char couleur, String typeIA) {
@@ -259,6 +260,11 @@ public class StuckWin {
         }
     }
 
+    /**
+     * Choisis de maniere aleatoire parmi les mouvements possibles un pion a deplacer
+     * @param couleur couleur des pions que l'IA doit jouer
+     * @return tableau contenant la position de depart et la destination du pion a jouer
+     */
     String[] jouerIANaive(char couleur) {
         ArrayList<int[][]> possibleMoves = getAllPossibleMoves(state, couleur);
 
