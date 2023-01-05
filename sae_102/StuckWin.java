@@ -321,7 +321,7 @@ public class StuckWin {
 
                 score--;
 
-                player = (player == 'R') ? 'B' : 'R';
+                player = (player == joueurs[1]) ? joueurs[0] : joueurs[1];
                 possibleMoves = getAllPossibleMoves(stateCopy, player);
 
                 firstIteration = false;
