@@ -319,8 +319,6 @@ public class StuckWin {
                     firstMove = randMove;
                 }
 
-                if (finPartie(stateCopy, player) == player) break;
-
                 score--;
 
                 player = (player == 'R') ? 'B' : 'R';
@@ -331,8 +329,9 @@ public class StuckWin {
 
             String firstMoveKey = arrToStr(firstMove);
 
-            if (player != couleur && finPartie(stateCopy, player) == player)
+            if (player != couleur && finPartie(stateCopy, player) == player) {
                 score *= -1;
+            }
 
             if (evaluations.containsKey(firstMoveKey)) {
                 evaluations.put(firstMoveKey, evaluations.get(firstMoveKey) + score);
