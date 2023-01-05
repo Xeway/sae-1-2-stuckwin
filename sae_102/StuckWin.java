@@ -297,7 +297,7 @@ public class StuckWin {
                 stateCopy[x] = state[x].clone();
             }
 
-            int score = (int)(BOARD_SIZE * SIZE);
+            int score = 999;
 
             ArrayList<int[][]> possibleMoves = getAllPossibleMoves(stateCopy, player);
 
@@ -330,7 +330,7 @@ public class StuckWin {
             String firstMoveKey = arrToStr(firstMove);
 
             if (player != couleur && finPartie(stateCopy, player) == player) {
-                score *= -1;
+                score = -Math.abs(score);
             }
 
             if (evaluations.containsKey(firstMoveKey)) {
