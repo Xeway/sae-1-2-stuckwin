@@ -279,6 +279,12 @@ public class StuckWin {
         };
     }
 
+    /**
+     * Joue un tour grace a l'algorithme Monte Carlo tree search
+     * @param simuState etat de la partie
+     * @param couleur couleur des pions
+     * @return tableau contenant la position de depart et la destination du pion a jouer
+     */
     String[] jouerIAMCTS(char[][] simuState, char couleur) {
         // stores scores for each simuations
         HashMap<String, Integer> evaluations = new HashMap<>();
@@ -355,6 +361,12 @@ public class StuckWin {
         };
     }
 
+    /**
+     * Convertit un tableau 2D d'entiers en chaine de caracteres
+     * Ex : [[4, 5], [8, 1]] -> "4-5/8-1"
+     * @param arr tableau a convertir
+     * @return la chaine de caracteres
+     */
     public static String arrToStr(int[][] arr) {
         StringBuilder result = new StringBuilder("");
 
@@ -374,6 +386,11 @@ public class StuckWin {
         return result.toString();
     }
 
+    /**
+     * Convertit une chaine de caracteres en un tableau 2D d'entiers
+     * @param str chaine a convertir
+     * @return le tableau 2D d'entiers
+     */
     public static int[][] strToArr(String str) {
         int[][] result;
 
@@ -391,6 +408,12 @@ public class StuckWin {
         return result;
     }
 
+    /**
+     * Recupere et retourne tous les mouvements possibles avec les pions de couleur
+     * @param currentState etat de la partie
+     * @param couleur couleur des pions
+     * @return une liste contenant tous les mouvements possibles (pions src et dest)
+     */
     ArrayList<int[][]> getAllPossibleMoves(char[][] currentState, char couleur) {
         int[][] pions = new int[13][2];
         getPions(currentState, pions, couleur);
@@ -427,6 +450,7 @@ public class StuckWin {
     /**
      * Gere le jeu en fonction du joueur/couleur
      * @param couleur couleur du joueur jouant actuellement
+     * @param typeIA type d'IA a jouer (1, 2 ou 3)
      * @return tableau de deux chaines {source, destination} des pions a jouer
      */
     String[] jouer(char couleur, String typeIA) {
@@ -464,6 +488,7 @@ public class StuckWin {
 
     /**
      * Retourne 'R' ou 'B' si vainqueur, 'N' si partie pas finie
+     * @param currentState etat de la partie
      * @param couleur couleur du prochain pion
      * @return le resultat ('R', 'B' ou 'N')
      */
@@ -480,6 +505,7 @@ public class StuckWin {
     /**
      * Recupere les coordonnees de tous les pions bleu ou bien rouge selon le
      * parametre 'couleur' et les mets dans le tableau 'pions' donne en parametre
+     * @param currentState etat de la partie
      * @param pions tableau qui va contenir les coordonnees des pions
      * @param couleur couleur des pions a recuperer
      */
@@ -506,6 +532,7 @@ public class StuckWin {
      * que celui-ci peut faire
      * Si un des mouvements de ne serait-ce qu'un seul pion est valide
      * alors la partie n'est pas finie donc renvoie true
+     * @param currentState etat de la partie
      * @param pions tableau contenant les coordonnees des pions de couleur
      * @param couleur couleur des pions
      * @return vrai si un des pions de couleur peut encore jouer/bouger, faux sinon
