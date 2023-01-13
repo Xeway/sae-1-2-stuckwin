@@ -15,6 +15,11 @@
  * Le probleme vient des conditions dans le while de la fonction 'main'
  * Nous n'avons pas ose le corriger.
  *
+ * NOTE2 : En plus de faire la commande "java StuckWin 1" ou
+ * "java StuckWin 2", vous pouvez egalement faire
+ * "java StuckWin 3" pour faire jouer les deux algorithmes
+ * l'un contre l'autre
+ *
  * @author HUMBERT Ewan <ewan.humbert@edu.univ-fcomte.fr>
  * @author SIOUAN Tom <tom.siouan@edu.univ-fcomte.fr>
  *
