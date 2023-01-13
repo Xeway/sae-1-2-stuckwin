@@ -251,7 +251,7 @@ public class StuckWin {
             case "1":
                 return jouerIANaive(couleur);
             case "2":
-                return jouerIAMCTS(state, couleur);
+                return jouerIAMCTS(couleur);
             default:
                 System.out.println("Erreur : Choix de l'IA invalide "
                                  + "(1 pour IA naive, 2 pour IA MCTS, 3 pour IA naive vs MCTS).");
@@ -281,12 +281,28 @@ public class StuckWin {
 
     /**
      * Joue un tour grace a l'algorithme Monte Carlo tree search
-     * @param simuState etat de la partie
      * @param couleur couleur des pions
      * @return tableau contenant la position de depart et la destination du pion a jouer
      */
-    String[] jouerIAMCTS(char[][] simuState, char couleur) {
-        // stores scores for each simuations
+    String[] jouerIAMCTS(char couleur) {
+        HashMap<String, Integer> evaluations = evaluateNodes(couleur);
+
+        int[][] bestMove = getBestMove(evaluations);
+
+        return new String[]{
+            validCase(bestMove[0][0], bestMove[0][1]),
+            validCase(bestMove[1][0], bestMove[1][1])
+        };
+    }
+
+    /**
+     * Simule avec des mouvements aleatoires NUMBER_OF_SIMULATIONS parties
+     * et evalue avec un score chaque simulation (+ gros score = meilleur)
+     * Cela correspond aux 3 premieres etapes mentionnees dans le rapport
+     * @param couleur couleur des pions
+     * @return les scores pour chaque simulation faite
+     */
+    HashMap<String, Integer> evaluateNodes(char couleur) {
         HashMap<String, Integer> evaluations = new HashMap<>();
 
         for (int i = 0; i < NUMBER_OF_SIMULATIONS; i++) {
@@ -340,6 +356,16 @@ public class StuckWin {
             }
         }
 
+        return evaluations;
+    }
+
+    /**
+     * Choisit le meilleur mouvement possible en fonction
+     * des scores de chaque simulation dans le parametre "evaluations"
+     * @param evaluations les scores de chaque simulation
+     * @return les coordonnees du meilleur mouvement
+     */
+    int[][] getBestMove(HashMap<String, Integer> evaluations) {
         String bestMoveKey = "";
         int bestScore = 0;
         boolean firstRound = true;
@@ -352,12 +378,7 @@ public class StuckWin {
             }
         }
 
-        int[][] bestMove = strToArr(bestMoveKey);
-
-        return new String[]{
-            validCase(bestMove[0][0], bestMove[0][1]),
-            validCase(bestMove[1][0], bestMove[1][1])
-        };
+        return strToArr(bestMoveKey);
     }
 
     /**
