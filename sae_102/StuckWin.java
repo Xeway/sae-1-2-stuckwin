@@ -362,6 +362,7 @@ public class StuckWin {
     /**
      * Choisit le meilleur mouvement possible en fonction
      * des scores de chaque simulation dans le parametre "evaluations"
+     * Cela correspond a la 4eme etape mentionnee dans le rapport
      * @param evaluations les scores de chaque simulation
      * @return les coordonnees du meilleur mouvement
      */
