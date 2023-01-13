@@ -23,7 +23,7 @@
 
 import java.io.FileOutputStream;
 import java.util.Collections;
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class StuckWin {
             {'-', 'B', 'B', 'B', 'B', '.', '-', '-'},
             {'-', 'B', 'B', 'B', 'B', '-', '-', '-'},
     };
-    static final Random rand = new Random();
+    static final SecureRandom rand = new SecureRandom();
     static final String SPACE = "  ";
     static final String CSV_ERROR = "Il y a eu une erreur pour l'ecriture du CSV.";
     static final int NUMBER_OF_SIMULATIONS = 500;
