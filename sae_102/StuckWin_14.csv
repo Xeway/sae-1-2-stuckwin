@@ -1,0 +1,35 @@
+Couleur,Mouvement source,Mouvement destination,Status
+B,E3,D3,OK
+R,D6,D5,OK
+B,D2,C3,OK
+R,C5,D4,OK
+B,F3,E4,OK
+R,B6,C5,OK
+B,C3,B3,OK
+R,C6,D6,OK
+B,F2,E3,OK
+R,B4,C4,OK
+B,D1,C2,OK
+R,A5,B4,OK
+B,E4,E5,OK
+R,A7,B6,OK
+B,C2,C3,OK
+R,D7,E6,OK
+B,F4,F5,OK
+R,A6,A5,OK
+B,E2,D2,OK
+R,B7,C6,OK
+B,F1,E2,OK
+R,C7,D7,OK
+B,G2,F2,OK
+R,D4,E4,OK
+B,G3,F3,OK
+R,C4,D4,OK
+B,E1,D1,OK
+R,C5,C4,OK
+B,G4,F4,OK
+R,C6,C5,OK
+B,G1,F1,OK
+R,B6,C6,OK
+B,F1,E1,OK
+Victoire : R (16 coups)
